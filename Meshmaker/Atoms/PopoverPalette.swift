@@ -21,7 +21,7 @@ struct PopoverPalette: View {
                 Swatch(color: .orange    ).onTapGesture { color = .orange }
                 Swatch(color: .red    ).onTapGesture { color = .red    }
                 Swatch(color: .purple    ).onTapGesture { color = .purple }
-                Swatch(color: .blue    ).onTapGesture { color = .blue   }
+                Swatch(color: .blue    ).onTapGesture { color = .blue   } 
             }
             .frame(height: 16)
             ColorPicker("Color", selection: $color)
