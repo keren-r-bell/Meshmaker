@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "4779FD0F-D1B5-4CF2-9809-D9EFE5F52571"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9175E1DB-5CE6-469B-BBD8-77552BA1EE3C"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Meshmaker/MeshToCode.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "11"
+            endingLineNumber = "11"
+            landmarkName = "f(_:)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "826D2A70-F1BF-4FBC-9C61-837E2852E138"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Meshmaker/MeshToCode.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "meshGradientCode(points:meshWidth:meshHeight:)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "826D2A70-F1BF-4FBC-9C61-837E2852E138 - d6f7f496aec46dc6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Meshmaker.meshGradientCode(points: Swift.Array&lt;Swift.Array&lt;Meshmaker.MeshPoint&gt;&gt;, meshWidth: Swift.Int, meshHeight: Swift.Int) -&gt; Swift.String"
+                  moduleName = "Meshmaker.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/keren/Code%20World/SwiftUI/Actual%20Things/Meshmaker/Meshmaker/MeshToCode.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15">
+               </Location>
+               <Location
+                  uuid = "826D2A70-F1BF-4FBC-9C61-837E2852E138 - eadac0dd94a1cdad"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Array&lt;Meshmaker.MeshPoint&gt;) -&gt; Swift.Array&lt;Meshmaker.MeshPoint&gt; in Meshmaker.meshGradientCode(points: Swift.Array&lt;Swift.Array&lt;Meshmaker.MeshPoint&gt;&gt;, meshWidth: Swift.Int, meshHeight: Swift.Int) -&gt; Swift.String"
+                  moduleName = "Meshmaker.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/keren/Code%20World/SwiftUI/Actual%20Things/Meshmaker/Meshmaker/MeshToCode.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0B7C44B4-3F4F-42EE-AEAD-3400E73AEEF0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Meshmaker/MeshToCode.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "meshGradientCode(points:meshWidth:meshHeight:)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "0B7C44B4-3F4F-42EE-AEAD-3400E73AEEF0 - d6f7f496aec46d08"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Meshmaker.meshGradientCode(points: Swift.Array&lt;Swift.Array&lt;Meshmaker.MeshPoint&gt;&gt;, meshWidth: Swift.Int, meshHeight: Swift.Int) -&gt; Swift.String"
+                  moduleName = "Meshmaker.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/keren/Code%20World/SwiftUI/Actual%20Things/Meshmaker/Meshmaker/MeshToCode.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17">
+               </Location>
+               <Location
+                  uuid = "0B7C44B4-3F4F-42EE-AEAD-3400E73AEEF0 - 80412d61324ff3eb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Meshmaker.MeshPoint) -&gt; Swift.String in Meshmaker.meshGradientCode(points: Swift.Array&lt;Swift.Array&lt;Meshmaker.MeshPoint&gt;&gt;, meshWidth: Swift.Int, meshHeight: Swift.Int) -&gt; Swift.String"
+                  moduleName = "Meshmaker.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/keren/Code%20World/SwiftUI/Actual%20Things/Meshmaker/Meshmaker/MeshToCode.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "18"
+                  endingLineNumber = "18">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FF6ED974-D318-4D1A-A3A4-30DE73CA98C2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Meshmaker/MeshToCode.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "meshGradientCode(points:meshWidth:meshHeight:)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "FF6ED974-D318-4D1A-A3A4-30DE73CA98C2 - d6f7f496aec46e8c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Meshmaker.meshGradientCode(points: Swift.Array&lt;Swift.Array&lt;Meshmaker.MeshPoint&gt;&gt;, meshWidth: Swift.Int, meshHeight: Swift.Int) -&gt; Swift.String"
+                  moduleName = "Meshmaker.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/keren/Code%20World/SwiftUI/Actual%20Things/Meshmaker/Meshmaker/MeshToCode.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21">
+               </Location>
+               <Location
+                  uuid = "FF6ED974-D318-4D1A-A3A4-30DE73CA98C2 - 7c878d8a4fe4ae74"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 (Meshmaker.MeshPoint) -&gt; Swift.String in Meshmaker.meshGradientCode(points: Swift.Array&lt;Swift.Array&lt;Meshmaker.MeshPoint&gt;&gt;, meshWidth: Swift.Int, meshHeight: Swift.Int) -&gt; Swift.String"
+                  moduleName = "Meshmaker.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/keren/Code%20World/SwiftUI/Actual%20Things/Meshmaker/Meshmaker/MeshToCode.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "22"
+                  endingLineNumber = "22">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0F70EE9C-CC66-4554-980C-FCDD52EC040B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Meshmaker/MeshToCode.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "meshGradientCode(points:meshWidth:meshHeight:)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
