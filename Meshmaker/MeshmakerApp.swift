@@ -46,7 +46,7 @@ struct MeshmakerApp: App {
             }
             
             CommandGroup(replacing: .help) {
-                Button("Help", systemImage: "questionmark.square.fill") {
+                Button("Meshmaker Tips & Tricks", systemImage: "questionmark.square.fill") {
                     openWindow(id: "help")
                 }
             }
@@ -76,7 +76,7 @@ struct MeshmakerApp: App {
         .commandsRemoved()
         .windowResizability(.contentSize)
         
-        Window("Help", id: "help") {
+        Window("Meshmaker Tips & Tricks", id: "help") {
             HelpWindowView()
         }
         .commandsRemoved()
