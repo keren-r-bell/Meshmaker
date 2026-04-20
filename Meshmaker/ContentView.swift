@@ -11,14 +11,21 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            GeometryReader { geometry in
-                MeshCanvasEditor(geometry: geometry)
-            }
-            .aspectRatio(1.0, contentMode: .fit)
-            .padding(64)
-            .inspector(isPresented: .constant(true)) {
+            HStack {
+                GeometryReader { geometry in
+                    MeshCanvasEditor(geometry: geometry)
+                }
+                .aspectRatio(1.0, contentMode: .fit)
+                .padding(64)
+                
                 InspectorView()
+                    .glassEffect(in: .containerRelative)
+                    .padding(12)
+                    .frame(width: 300)
             }
+/*            .inspector(isPresented: .constant(true)) {
+                InspectorView()
+            }*/
             .toolbar {
                 ToolbarItem {
                     Button("Select All Points", systemImage: "circle.grid.2x2.topleft.checkmark.filled") {

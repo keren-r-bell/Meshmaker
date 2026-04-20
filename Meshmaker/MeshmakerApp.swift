@@ -22,6 +22,12 @@ struct MeshmakerApp: App {
                     NSWindow.allowsAutomaticWindowTabbing = false
                     #endif
                 }
+                .containerBackground(
+                    .thinMaterial, for: .window
+                )
+                .toolbarBackgroundVisibility(
+                    .hidden, for: .windowToolbar
+                )
         }
         .commandsRemoved()
         .commands {
@@ -52,6 +58,10 @@ struct MeshmakerApp: App {
             }
             
             CommandMenu("Edit") {
+                Button("Copy SwiftUI Code", systemImage: "doc.on.doc") {
+                    copyMeshCode(from: canvasState)
+                }
+                .keyboardShortcut("C", modifiers: .command.union(.shift))
                 PresetMenu()
                     .environmentObject(canvasState)
                 Divider()

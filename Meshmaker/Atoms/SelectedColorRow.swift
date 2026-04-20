@@ -11,25 +11,49 @@ import AppKit
 struct SelectedColorRow: View {
     var name: String = "Color"
     @Binding var color: Color
+    @State var showCopyButton: Bool = false
     
     var body: some View {
         HStack {
             Text(name)
             
             Button {
-                print("Penis")
+                print("BLuhhh")
             } label: {
-                Text(hsbaString(for: color))
+                Text(color.description)
                     .foregroundStyle(.secondary)
                     .fontWidth(.compressed)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
             }
             .buttonStyle(.plain)
+            .overlay(alignment: .trailing) {
+                if showCopyButton {
+                    Button("Copy color", systemImage: "document.on.document") {
+                        #if canImport(AppKit)
+                        NSPasteboard.general.clearContents()
+                        NSPasteboard.general.setString(color.description, forType: .string)
+                        #elseif canImport(UIKit)
+                        UIPasteboard.general.string = color.description//hsbaString(for: color)
+                        #endif
+                    }
+                    .labelStyle(.iconOnly)
+                    .buttonStyle(.glassProminent)
+                }
+            }
             
             ColorPicker("Color", selection: $color).labelsHidden()
         }
         .lineLimit(1)
+        .contentShape(.containerRelative)
+        .onContinuousHover { phase in
+            switch phase {
+            case .active(let _):
+                showCopyButton = true
+            case .ended:
+                showCopyButton = false
+            }
+        }
     }
 }
 

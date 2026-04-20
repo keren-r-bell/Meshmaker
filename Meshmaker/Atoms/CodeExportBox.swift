@@ -15,6 +15,22 @@ import AppKit
 typealias NativeColor = NSColor
 #endif
 
+// Global helper to copy the current mesh code from a given canvas state.
+  func copyMeshCode(from canvasState: CanvasState) {
+      let generatedCode = CodeExportBox().generateMeshGradientCode(
+          width: canvasState.meshWidth,
+          height: canvasState.meshHeight,
+          points: canvasState.points,
+          smoothGrads: canvasState.smoothGrads
+      )
+      #if canImport(AppKit)
+      NSPasteboard.general.clearContents()
+      NSPasteboard.general.setString(generatedCode, forType: .string)
+      #elseif canImport(UIKit)
+      UIPasteboard.general.string = generatedCode
+      #endif
+  }
+
 struct CodeExportBox: View {
     @EnvironmentObject var canvasState: CanvasState
     
@@ -27,7 +43,7 @@ struct CodeExportBox: View {
             smoothGrads: canvasState.smoothGrads
         )
     }
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             Label("SwiftUI Code", systemImage: "swift")
@@ -38,20 +54,14 @@ struct CodeExportBox: View {
                 .font(.system(size: 8, design: .monospaced))
                 .scrollContentBackground(.hidden)
                 .contentTransition(.numericText())
-                .frame(height: 160)
-                .background(.thinMaterial)
+                .frame(height: 130)
+                .background(.thickMaterial)
                 .cornerRadius(8)
                 .padding(8)
                 .disabled(true)
                 .overlay(alignment: .bottomTrailing) {
                     Button("Copy to Clipboard", systemImage: "doc.on.doc") {
-                        // 3. Use the generated string for the clipboard actions
-                        #if canImport(AppKit)
-                            NSPasteboard.general.clearContents()
-                            NSPasteboard.general.setString(generatedCode, forType: .string)
-                        #elseif canImport(UIKit)
-                            UIPasteboard.general.string = generatedCode
-                        #endif
+                        copyMeshCode(from: canvasState)
                     }
                     .buttonStyle(.glassProminent) // Assuming this is your custom style
                     .padding()
@@ -127,3 +137,4 @@ func hsbaString(for color: Color) -> String {
     #endif
     return ".clear"
 }
+

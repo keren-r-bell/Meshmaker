@@ -10,7 +10,6 @@ import SwiftUI
 struct PaletteBox: View {
     var body: some View {
         VStack {
-            
             HStack {
                 Swatch(color: .green)
                 Swatch(color: .yellow)
@@ -19,7 +18,7 @@ struct PaletteBox: View {
                 Swatch(color: .pink)
                 Swatch(color: .purple)
             }
-            .frame(height: 40)
+            .frame(height: 20)
             HStack {
                 Swatch(color: .blue)
                 Swatch(color: .cyan)
@@ -28,7 +27,7 @@ struct PaletteBox: View {
                 Swatch(color: .white)
                 Swatch(color: .black)
             }
-            .frame(height: 40)
+            .frame(height: 20)
         }
         .labelsHidden()
     }
