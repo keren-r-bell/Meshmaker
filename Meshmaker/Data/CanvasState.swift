@@ -13,16 +13,6 @@ class CanvasState: ObservableObject {
     @Published var smoothGrads: Bool = true
     // MARK: Interaction and Selection State
     @Published var selectedPointIDs: [UUID] = []
-    var allPointBindings: [Binding<MeshPoint>] {
-        points.indices.flatMap { row in
-            points[row].indices.map { col in
-                Binding(
-                    get: { self.points[row][col] },
-                    set: { self.points[row][col] = $0 }
-                )
-            }
-        }
-    }
     
     @Published var isHovering: Bool = false
     @Published var cursorPosition: CGPoint = .zero
@@ -158,63 +148,10 @@ class CanvasState: ObservableObject {
     
     func addGhostsToPoints(size: CGSize) {
         print("I have to do this myself.")
-        /*
+        
         guard !ghosts.isEmpty else { print("No ghosts here..."); return }
         
-        if orientLineHorizIfTrue {
-            print("Adding a new Row")
-            // All ghosts share the same Y
-            let newY = ghosts.first!.y
-            
-            // Find insertion row index
-            var insertIndex = 0
-            if let firstColumn = points.first {
-                insertIndex = firstColumn.lastIndex(where: { $0.y < newY }) ?? 0
-                insertIndex += 1
-            }
-            
-            // Sort ghosts by X to match columns
-            var sortedGhosts = ghosts.sorted { $0.x < $1.x }
-
-            // We removed the closest ghost during preview; reinsert a point at the cursor X
-            // NOTE: cursorPosition is already clamped in pixel space; we need normalized X/Y
-            // Recompute normalized cursor
-            let actualNormX = Float(cursorPosition.x / size.width)
-            let insertAt = sortedGhosts.firstIndex(where: { $0.x > actualNormX }) ?? sortedGhosts.count
-
-            // Create a new point at the exact cursor projection (same Y as the new row)
-            let newDotY = ghosts.first!.y
-            let newDotX = Float(cursorPosition.x / size.width)
-
-            // Interpolate color from neighbors if possible
-            let prev = insertAt > 0 ? sortedGhosts[insertAt - 1] : nil
-            let next = insertAt < sortedGhosts.count ? sortedGhosts[insertAt] : nil
-            let newColor: Color = {
-                if let p = prev, let n = next {
-                    return Color(p.color.mix(with: n.color, by: 0.5))
-                } else if let p = prev {
-                    return p.color
-                } else if let n = next {
-                    return n.color
-                } else {
-                    return .gray
-                }
-            }()
-
-            let replacement = MeshPoint(x: newDotX, y: newDotY, color: newColor)
-            sortedGhosts.insert(replacement, at: insertAt)
-
-            // Ensure count matches width
-            guard sortedGhosts.count == meshWidth else {
-                print("Eeeyikes! it seems \(sortedGhosts.count) != target \(meshWidth)")
-                return
-            }
-
-            // Insert row
-            points.insert(sortedGhosts, at: insertIndex)
-            meshHeight += 1
-            print("- Mesh height increased")
-        } else {
+        if !orientLineHorizIfTrue {
             print("Adding a new Column")
             // All ghosts share the same X
             let newX = ghosts.first!.x
@@ -266,11 +203,64 @@ class CanvasState: ObservableObject {
             
             meshWidth += 1
             print("- Mesh width increased")
-        }
+        } else {
+            print("Adding a new Row IS IMPOSSIBLE!")/*
+            // All ghosts share the same Y
+            let newY = ghosts.first!.y
+            
+            // Find insertion row index
+            var insertIndex = 0
+            if let firstColumn = points.first {
+                insertIndex = firstColumn.lastIndex(where: { $0.y < newY }) ?? 0
+                insertIndex += 1
+            }
+            
+            // Sort ghosts by X to match columns
+            var sortedGhosts = ghosts.sorted { $0.x < $1.x }
+
+            // We removed the closest ghost during preview; reinsert a point at the cursor X
+            // NOTE: cursorPosition is already clamped in pixel space; we need normalized X/Y
+            // Recompute normalized cursor
+            let actualNormX = Float(cursorPosition.x / size.width)
+            let insertAt = sortedGhosts.firstIndex(where: { $0.x > actualNormX }) ?? sortedGhosts.count
+
+            // Create a new point at the exact cursor projection (same Y as the new row)
+            let newDotY = ghosts.first!.y
+            let newDotX = Float(cursorPosition.x / size.width)
+
+            // Interpolate color from neighbors if possible
+            let prev = insertAt > 0 ? sortedGhosts[insertAt - 1] : nil
+            let next = insertAt < sortedGhosts.count ? sortedGhosts[insertAt] : nil
+            let newColor: Color = {
+                if let p = prev, let n = next {
+                    return Color(p.color.mix(with: n.color, by: 0.5))
+                } else if let p = prev {
+                    return p.color
+                } else if let n = next {
+                    return n.color
+                } else {
+                    return .gray
+                }
+            }()
+
+            let replacement = MeshPoint(x: newDotX, y: newDotY, color: newColor)
+            sortedGhosts.insert(replacement, at: insertAt)
+
+            // Ensure count matches width
+            guard sortedGhosts.count == meshWidth else {
+                print("Eeeyikes! it seems \(sortedGhosts.count) != target \(meshWidth)")
+                return
+            }
+
+            // Insert row
+            points.insert(sortedGhosts, at: insertIndex)
+            meshHeight += 1*/
+            print("- Mesh height increased")
+        } 
         print("I've added so many ghosts!")
         // Clear ghosts after committing
         ghosts.removeAll()
-         */
+         
     }
     
     
@@ -334,6 +324,16 @@ class CanvasState: ObservableObject {
     
     
     // MARK: - Computed Properties for View Compatibility
+    var allPointBindings: [Binding<MeshPoint>] {
+        points.indices.flatMap { row in
+            points[row].indices.map { col in
+                Binding(
+                    get: { self.points[row][col] },
+                    set: { self.points[row][col] = $0 }
+                )
+            }
+        }
+    }
     
     /// Provides a flattened array of SIMD2<Float> positions for compatible views like MeshGradient.
     var flattenedSIMD2Points: [SIMD2<Float>] {
