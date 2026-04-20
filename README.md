@@ -7,5 +7,5 @@ This app was made because of how frustrating I found coding even simple placehol
 This aims to be a comprehensive canvas editing tool with modifier keys, keyboard shortcuts and color harmony for its purpose.
 
 ### TO DO:
-- [ ] Implement adding points.
-- [ ] Figure out color editing & harmony.
+- [ ] Implement adding points - See #4
+- [ ] Figure out color editing & harmony - See #1
