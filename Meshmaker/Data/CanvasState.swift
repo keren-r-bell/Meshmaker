@@ -147,12 +147,12 @@ class CanvasState: ObservableObject {
     }
     
     func addGhostsToPoints(size: CGSize) {
-        print("I have to do this myself.")
+        //print("I have to do this myself.")
         
-        guard !ghosts.isEmpty else { print("No ghosts here..."); return }
+        guard !ghosts.isEmpty else { /*print("No ghosts here..."); */return }
         
         if !orientLineHorizIfTrue {
-            print("Adding a new Column")
+            //print("Adding a new Column")
             // All ghosts share the same X
             let newX = ghosts.first!.x
             
@@ -192,7 +192,7 @@ class CanvasState: ObservableObject {
 
             // Ensure count matches height
             guard sortedGhosts.count == meshHeight else {
-                print("Eeeyikes! it seems \(sortedGhosts.count) != target \(meshHeight)")
+                //print("Eeeyikes! it seems \(sortedGhosts.count) != target \(meshHeight)")
                 return
             }
             
@@ -202,18 +202,18 @@ class CanvasState: ObservableObject {
             }
             
             meshWidth += 1
-            print("- Mesh width increased")
+            //print("- Mesh width increased")
         } else {
-            print("Adding a new Row IS IMPOSSIBLE!")/*
-            // All ghosts share the same Y
+            //print("Adding a new Row")
+            
             let newY = ghosts.first!.y
             
-            // Find insertion row index
             var insertIndex = 0
-            if let firstColumn = points.first {
+            // the first point from every row
+            let firstColumn = points.map { $0.first! }
                 insertIndex = firstColumn.lastIndex(where: { $0.y < newY }) ?? 0
                 insertIndex += 1
-            }
+            print(insertIndex)
             
             // Sort ghosts by X to match columns
             var sortedGhosts = ghosts.sorted { $0.x < $1.x }
@@ -248,16 +248,17 @@ class CanvasState: ObservableObject {
 
             // Ensure count matches width
             guard sortedGhosts.count == meshWidth else {
-                print("Eeeyikes! it seems \(sortedGhosts.count) != target \(meshWidth)")
+                //print("Eeeyikes! it seems \(sortedGhosts.count) != target \(meshWidth)")
                 return
             }
 
+            meshHeight += 1
             // Insert row
             points.insert(sortedGhosts, at: insertIndex)
-            meshHeight += 1*/
-            print("- Mesh height increased")
-        } 
-        print("I've added so many ghosts!")
+            //print("- Mesh height increased")
+            
+        }
+        //print("I've added so many ghosts!")
         // Clear ghosts after committing
         ghosts.removeAll()
          

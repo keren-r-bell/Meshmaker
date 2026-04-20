@@ -33,11 +33,11 @@ struct ContentView: View {
                     }
                 }
                 ToolbarSpacer()
-                ToolbarItemGroup() {
+                /* ToolbarItemGroup() {
                     Button("Undo", systemImage: "arrow.uturn.backward") {}
                     Button("Redo", systemImage: "arrow.uturn.forward") {}.disabled(true)
                 }
-                ToolbarSpacer()
+                ToolbarSpacer()*/
                 ToolbarItem() {
                     PresetMenu()
                 }
