@@ -11,8 +11,8 @@ struct PaletteBox: View {
     @EnvironmentObject var canvasState: CanvasState
     
     var body: some View {
-        VStack {
-            HStack {
+        VStack(spacing: 6) {
+            HStack(spacing: 6) {
                 Swatch(color: .green).onTapGesture { canvasState.applyColorToSelection(.green) }
                 Swatch(color: .yellow).onTapGesture { canvasState.applyColorToSelection(.yellow) }
                 Swatch(color: .orange).onTapGesture { canvasState.applyColorToSelection(.orange) }
@@ -20,8 +20,8 @@ struct PaletteBox: View {
                 Swatch(color: .pink).onTapGesture { canvasState.applyColorToSelection(.pink) }
                 Swatch(color: .purple).onTapGesture { canvasState.applyColorToSelection(.purple) }
             }
-            .frame(height: 20)
-            HStack {
+            .frame(height: 24)
+            HStack(spacing: 6) {
                 Swatch(color: .blue).onTapGesture { canvasState.applyColorToSelection(.blue) }
                 Swatch(color: .cyan).onTapGesture { canvasState.applyColorToSelection(.cyan) }
                 Swatch(color: .teal).onTapGesture { canvasState.applyColorToSelection(.teal) }
@@ -29,7 +29,7 @@ struct PaletteBox: View {
                 Swatch(color: .white).onTapGesture { canvasState.applyColorToSelection(.white) }
                 Swatch(color: .black).onTapGesture { canvasState.applyColorToSelection(.black) }
             }
-            .frame(height: 20)
+            .frame(height: 24)
         }
         .labelsHidden()
     }
@@ -44,7 +44,7 @@ struct SimilarColors: View {
     
     var body: some View {
         HStack(spacing: 2) {
-            let hueLeft = Color(hue: hue - 0.08, saturation: sat, brightness: bri)
+            let hueLeft = Color(hue: hue - 0.05, saturation: sat, brightness: bri)
             Rectangle()
                 .fill(hueLeft)
                 .clipShape(.rect(topLeadingCorner: 8, topTrailingCorner: 2, bottomLeadingCorner: 8, bottomTrailingCorner: 2))
@@ -75,7 +75,7 @@ struct SimilarColors: View {
                     .onTapGesture { color = satDown }
             }
             
-            let overHue = hue + 0.08 //Small fix to wrap color around
+            let overHue = hue + 0.05 //Small fix to wrap color around
             let hueRight = Color(hue: overHue > 1.0 ? overHue - 1.0: overHue, saturation: sat, brightness: bri)
             Rectangle()
                 .fill(hueRight)

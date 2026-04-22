@@ -28,9 +28,9 @@ struct InspectorView: View {
                     }
                 }
                 .safeAreaPadding(.vertical, 8)
-                
-                Toggle("Smooth Gradients", systemImage: "graph.2d", isOn: $canvasState.smoothGrads)
+                Divider()
             }
+            Toggle("Smooth Gradients", systemImage: "graph.2d", isOn: $canvasState.smoothGrads)
         }
         .safeAreaPadding()
     }

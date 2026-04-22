@@ -2,7 +2,7 @@
   
 **Meshmaker** lets you create Mesh Gradient elements for your SwiftUI code in an easily, precise canvas.  
   
-This app was made because of how frustrating I found coding even simple placeholder visuals using the very visually pleasing [MeshGradient](https://developer.apple.com/documentation/SwiftUI/MeshGradient) structure, so I figured someone should make a tool for it, and despite some options existing online, I still felt compelled to make my own. But, enough personal stories.  
+This app was made because of how frustrating I found coding even simple placeholder visuals was using the very visually pleasing [MeshGradient](https://developer.apple.com/documentation/SwiftUI/MeshGradient) structure, so I figured someone should make a tool for it, and despite some options existing online, I still felt compelled to make my own. But, enough personal stories.  
   
 ---
 ### Starting Off  
@@ -16,7 +16,10 @@ You can use **⇧ Shift** to select multiple points, and move them together.
     
 ---
 ### Coloring Points  
-When you select any amount of points, pressing a **🔳 Swatch** will color all of them. You can [well, to be implemented, but you will be able to] drag colors from swatch onto specific points, and colors from points to a new swatch spot. Right click a swatch in the sidebar to delete it. [To be implemented!]  
+**Selected points** appear in the Sidebar, where you can adjust their color, or change them entirely (To be implemented!).  
+In the selected color's row, you can subtly adjust the hue, saturation and brightness of the center color.  
+
+Above the point list, are **🔲 Swatches**. When you select one of them, all selected points will change to its color. To quickly begin iterating from a color, select all points (**⌘ + A**), pick a swatch, and begin iterating.
   
 ---
 ### Adding Points  

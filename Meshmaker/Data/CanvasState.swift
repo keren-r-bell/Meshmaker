@@ -189,6 +189,7 @@ class CanvasState: ObservableObject {
 
             let replacement = MeshPoint(x: newDotX, y: newDotY, color: newColor)
             sortedGhosts.insert(replacement, at: insertAt)
+            selectedPointIDs.append(replacement.id)
 
             // Ensure count matches height
             guard sortedGhosts.count == meshHeight else {
@@ -245,7 +246,8 @@ class CanvasState: ObservableObject {
 
             let replacement = MeshPoint(x: newDotX, y: newDotY, color: newColor)
             sortedGhosts.insert(replacement, at: insertAt)
-
+            selectedPointIDs.append(replacement.id)
+            
             // Ensure count matches width
             guard sortedGhosts.count == meshWidth else {
                 //print("Eeeyikes! it seems \(sortedGhosts.count) != target \(meshWidth)")

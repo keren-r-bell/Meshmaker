@@ -14,6 +14,7 @@ struct MeshCanvasEditor: View {
     var body: some View {
         ZStack {
             Rectangle()
+                .fill(.background)
                 .stroke(.separator)
             MeshGradient(
                 width: canvasState.meshWidth,

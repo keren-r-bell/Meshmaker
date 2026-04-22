@@ -16,7 +16,7 @@ struct Swatch: View {
     var body: some View {
         RoundedRectangle(cornerRadius: radii)
             .fill(color)
-            //.fill(.shadow(.inner(color: .black.opacity(0.3), radius: 3, y: 1)))
+            //.stroke(.shadow(.inner(color: .black.opacity(0.07), radius: 3, y: 1)))
             .stroke(.white, lineWidth: 2)
             .onDrag {
                 // Provide native color pasteboard data so ColorPicker/NSColorWell can accept the drop
