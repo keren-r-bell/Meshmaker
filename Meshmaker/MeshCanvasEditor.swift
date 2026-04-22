@@ -86,7 +86,7 @@ struct MeshCanvasEditor: View {
                             DragGesture(minimumDistance: 0.1)
                                 .onChanged { value in
                                     if canvasState.isHovering {
-                                        print("And this is a drag!")
+                                        //print("And this is a drag!")
                                         canvasState.handleNewSelection(meshPoint, isDragging: true)
                                     }
                                     

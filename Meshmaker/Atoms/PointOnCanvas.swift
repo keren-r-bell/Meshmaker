@@ -28,6 +28,15 @@ struct PointOnCanvas: View {
             .popover(isPresented: $isPopoverVisible, arrowEdge: .top) {
                 PopoverPalette(color: $meshPoint.color)
             }
+            .onChange(of: isPopoverVisible) { before, after in
+                //print("Popover down, but an existing isn't dragging (so canvas is probably Hovering, right? \(canvasState.isHovering)")
+                if after == false && canvasState.isHovering {
+                    /// If this is the only point as the popover closed, deselect it.
+                    if canvasState.selectedPointIDs == [meshPoint.id] {
+                        canvasState.selectedPointIDs = []
+                    }
+                }
+            }
         /*
             .overlay {
                 if canvasState.selectedPointIDs.contains(meshPoint.id) {

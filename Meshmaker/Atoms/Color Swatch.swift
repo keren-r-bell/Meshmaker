@@ -11,9 +11,10 @@ import AppKit
 struct Swatch: View {
     @EnvironmentObject var canvasState: CanvasState
     var color: Color
+    var radii: CGFloat = 4
     
     var body: some View {
-        RoundedRectangle(cornerRadius: 4)
+        RoundedRectangle(cornerRadius: radii)
             .fill(color)
             //.fill(.shadow(.inner(color: .black.opacity(0.3), radius: 3, y: 1)))
             .stroke(.white, lineWidth: 2)
@@ -29,13 +30,10 @@ struct Swatch: View {
                 }
                 return provider
             } preview: {
-                Circle()
+                Capsule()
                     .fill(color)
-                    .frame(width: 16, height: 16)
+                    .frame(width: 24, height: 16)
                     .padding(4)
-            }
-            .onTapGesture {
-                canvasState.applyColorToSelection(color)
             }
     }
 }

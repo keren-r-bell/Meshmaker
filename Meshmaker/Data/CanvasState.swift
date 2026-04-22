@@ -213,7 +213,7 @@ class CanvasState: ObservableObject {
             let firstColumn = points.map { $0.first! }
                 insertIndex = firstColumn.lastIndex(where: { $0.y < newY }) ?? 0
                 insertIndex += 1
-            print(insertIndex)
+            //print(insertIndex)
             
             // Sort ghosts by X to match columns
             var sortedGhosts = ghosts.sorted { $0.x < $1.x }
@@ -295,7 +295,7 @@ class CanvasState: ObservableObject {
         if !isShiftDown {
             if !isSelectedAlready || !isDragging {
                 selectedPointIDs = []
-            } else { print("either selected or dragging")}
+            } //else { print("either selected or dragging")}
         } else {
             if !isDragging && isSelectedAlready {
                 selectedPointIDs.removeAll(where: { $0 == point.id } )

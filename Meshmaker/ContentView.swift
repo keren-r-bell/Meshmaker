@@ -16,7 +16,7 @@ struct ContentView: View {
                     MeshCanvasEditor(geometry: geometry)
                 }
                 .aspectRatio(1.0, contentMode: .fit)
-                .padding(64)
+                .padding(48)
                 
                 InspectorView()
                     .glassEffect(in: .containerRelative)
