@@ -11,24 +11,22 @@ struct PresetMenu: View {
     @EnvironmentObject var canvasState: CanvasState
     
     var body: some View {
-        Menu("New...", systemImage: "plus.square.dashed") {
-            // When creating a new state, we need to update the meshWidth and meshHeight as well.
-            // This implies CanvasState needs a method to reset its points and dimensions.
-            // For now, direct manipulation for demonstration.
+        Menu("New...", systemImage: "plus") {
+            Button("New", systemImage: "square.dotted") {
+                withAnimation(.bouncy) {
+                    canvasState.meshWidth = 2
+                    canvasState.meshHeight = 2
+                    canvasState.points = preset0
+                    canvasState.selectedPointIDs = []
+                }
+            }.keyboardShortcut("1", modifiers: .control.union(.shift))
+            
             Button("Default", systemImage: "squareshape.split.2x2.dotted.inside.and.outside") {
                 withAnimation(.bouncy) {
                     canvasState.meshWidth = 3
                     canvasState.meshHeight = 3
-                    // Assuming preset0 is accessible and correctly defined.
-                    canvasState.points = preset0
-                }// Animation for state change
-            }.keyboardShortcut("1", modifiers: .control.union(.shift))
-            
-            Button("Empty", systemImage: "square.dotted") {
-                withAnimation(.bouncy) {
-                    canvasState.meshWidth = 2
-                    canvasState.meshHeight = 2
                     canvasState.points = preset1
+                    canvasState.selectedPointIDs = []
                 }
             }.keyboardShortcut("2", modifiers: .control.union(.shift))
             
@@ -37,6 +35,7 @@ struct PresetMenu: View {
                     canvasState.meshWidth = 4
                     canvasState.meshHeight = 4
                     canvasState.points = preset2
+                    canvasState.selectedPointIDs = []
                 }
             }.keyboardShortcut("3", modifiers: .control.union(.shift))
             
@@ -45,14 +44,16 @@ struct PresetMenu: View {
                     canvasState.meshWidth = 3
                     canvasState.meshHeight = 4
                     canvasState.points = preset3
+                    canvasState.selectedPointIDs = []
                 }
             }.keyboardShortcut("4", modifiers: .control.union(.shift))
             
-            Button("Iconique", systemImage: "app.gift.fill") {
+            Button("Iconic", systemImage: "app.gift.fill") {
                 withAnimation(.bouncy) {
-                    canvasState.meshWidth = 2
-                    canvasState.meshHeight = 2
+                    canvasState.meshWidth = 3
+                    canvasState.meshHeight = 3
                     canvasState.points = preset4
+                    canvasState.selectedPointIDs = []
                 }
             }.keyboardShortcut("5", modifiers: .control.union(.shift))
             
@@ -61,6 +62,7 @@ struct PresetMenu: View {
                     canvasState.meshWidth = 10
                     canvasState.meshHeight = 10
                     canvasState.points = preset5
+                    canvasState.selectedPointIDs = []
                 }
             }.keyboardShortcut("6", modifiers: .control.union(.shift))
         }

@@ -8,14 +8,13 @@
 import SwiftUI
 
 let preset0 = [
+    [MeshPoint(x: 0.0, y: 0.0, color: .orange), MeshPoint(x: 1.0, y: 0.0, color: .orange.mix(with: .purple, by: 0.3))],
+    [MeshPoint(x: 0.0, y: 1.0, color: .purple.mix(with: .orange, by: 0.3)), MeshPoint(x: 1.0, y: 1.0, color: .purple )]
+]
+let preset1 = [
     [MeshPoint(x: 0.0, y: 0.0, color: .orange), MeshPoint(x: 0.5, y: 0.0, color: .red), MeshPoint(x: 1.0, y: 0.0, color: .red),],
     [MeshPoint(x: 0.0, y: 0.5, color: .yellow), MeshPoint(x: 0.5, y: 0.5, color: .indigo), MeshPoint(x: 1.0, y: 0.5, color: .pink),],
     [MeshPoint(x: 0.0, y: 1.0, color: .cyan), MeshPoint(x: 0.5, y: 1.0, color: .blue), MeshPoint(x: 1.0, y: 1.0, color: .purple)]
-]
-
-let preset1 = [
-    [MeshPoint(x: 0.0, y: 0.0, color: .white), MeshPoint(x: 1.0, y: 0.0, color: .gray)],
-    [MeshPoint(x: 0.0, y: 1.0, color: .gray), MeshPoint(x: 1.0, y: 1.0, color: .black)]
 ]
 
 let preset2 = [
@@ -33,8 +32,17 @@ let preset3 = [
 ]
 
 let preset4 = [
-    [MeshPoint(x: 0.0, y: 0.0, color: Color(red: 0.3, green: 0.7, blue: 1.0)), MeshPoint(x: 1.0, y: 0.0, color: Color(red: 0.78, green: 0.62, blue: 1.0))],
-    [MeshPoint(x: 0.0, y: 1.0, color: Color(red: 0.72, green: 0.5, blue: 1.0)), MeshPoint(x: 1.0, y: 1.0, color: Color(red: 1.0, green: 0.55, blue: 0.7))]
+    [MeshPoint(x: 0.00, y: 0.00, color: Color(hue: 0.57, saturation: 0.70, brightness: 1.00)),
+     MeshPoint(x: 0.53, y: 0.00, color: Color(hue: 0.63, saturation: 0.41, brightness: 1.00)),
+     MeshPoint(x: 1.00, y: 0.00, color: Color(hue: 0.88, saturation: 0.21, brightness: 1.00))],
+    
+    [MeshPoint(x: 0.00, y: 0.39, color: Color(hue: 0.74, saturation: 0.50, brightness: 1.00)),
+     MeshPoint(x: 0.41, y: 0.61, color: Color(hue: 0.94, saturation: 0.45, brightness: 1.00)),
+     MeshPoint(x: 1.00, y: 0.34, color: Color(hue: 0.94, saturation: 0.31, brightness: 1.00))],
+    
+    [MeshPoint(x: 0.00, y: 1.00, color: Color(hue: 0.78, saturation: 0.56, brightness: 0.95)),
+     MeshPoint(x: 0.53, y: 1.00, color: Color(hue: 0.65, saturation: 0.44, brightness: 1.00)),
+     MeshPoint(x: 1.00, y: 1.00, color: Color(hue: 0.65, saturation: 0.54, brightness: 1.00))]
 ]
 
 

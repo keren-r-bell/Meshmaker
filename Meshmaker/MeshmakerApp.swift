@@ -11,7 +11,7 @@ import SwiftUI
 struct MeshmakerApp: App {
     @Environment(\.openWindow) private var openWindow
     
-    @StateObject var canvasState = CanvasState(width: 3, height: 3, preset: preset0)
+    @StateObject var canvasState = CanvasState(width: 3, height: 3, preset: preset1)
     
     var body: some Scene {
         WindowGroup {
@@ -31,10 +31,17 @@ struct MeshmakerApp: App {
         }
         .commandsRemoved()
         .commands {
-            CommandGroup(before: .appInfo) {
+            CommandGroup(before: .appTermination) {
                 Button("About Meshmaker", systemImage: "info.circle") {
                     openWindow(id: "about")
                 }
+                Divider()
+                Button("Close Window") {
+                    #if os(macOS)
+                    NSApp.keyWindow?.performClose(nil)
+                    #endif
+                }
+                .keyboardShortcut("W")
                 Divider()
                 Button("Minimize") {
                     NSApplication.shared.miniaturizeAll(nil)

@@ -17,7 +17,7 @@ You can use **⇧ Shift** to select multiple points, and move them together.
 ---
 ### Coloring Points  
 **Selected points** appear in the Sidebar, where you can adjust their color, or change them entirely (To be implemented!).  
-In the selected color's row, you can subtly adjust the hue, saturation and brightness of the center color.  
+In the selected color's row, you can subtly adjust the hue, saturation and brightness of the center color.   
 
 Above the point list, are **🔲 Swatches**. When you select one of them, all selected points will change to its color. To quickly begin iterating from a color, select all points (**⌘ + A**), pick a swatch, and begin iterating.
   

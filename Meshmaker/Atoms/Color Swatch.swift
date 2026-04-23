@@ -30,10 +30,9 @@ struct Swatch: View {
                 }
                 return provider
             } preview: {
-                Capsule()
+                RoundedRectangle(cornerRadius: 8)
                     .fill(color)
-                    .frame(width: 24, height: 16)
-                    .padding(4)
+                    .frame(width: 32, height: 32)
             }
     }
 }

@@ -83,56 +83,56 @@ class CanvasState: ObservableObject {
     
     func positionGhosts(size: CGSize) {
         var newGhosts: [MeshPoint] = []
-        // Calculate relative positions based on current orientation and shared value.
+        /// Calculate relative positions based on current orientation and shared value.
         let relativeX = Float((orientLineHorizIfTrue ? cursorPosition.x : sharedValue) / size.width)
         let relativeY = Float((orientLineHorizIfTrue ? sharedValue : cursorPosition.y) / size.height)
         
         if orientLineHorizIfTrue {
             for columnIndex in 0..<meshWidth {
-                // Ensure there are enough rows to form a column.
+                /// Ensure there are enough rows to form a column.
                 guard points.count > 0 && points[0].count > columnIndex else { continue }
                 let column = points.map { $0[columnIndex] } // Extract points in this column.
                 
-                // Find the index of the point just below the target relativeY.
+                /// Find the index of the point just below the target relativeY.
                 indexToUpdate = column.lastIndex(where: { $0.y < relativeY } ) ?? 0
                 
-                // Ensure indexToUpdate is within column bounds.
+                /// Ensure indexToUpdate is within column bounds.
                 guard indexToUpdate < column.count else { continue }
                 
                 let prev = column[indexToUpdate]
-                // Get the next point, handling boundary cases.
+                /// Get the next point, handling boundary cases.
                 let nextIndex = min(indexToUpdate + 1, column.count - 1)
                 let next = column[nextIndex]
                 
-                // Interpolate X position and color for the ghost.
+                /// Interpolate X position and color for the ghost.
                 let avgX = (prev.x + next.x) / 2.0
                 let avgColor = Color(prev.color.mix(with: next.color, by: 0.5)) // Assumes Color.mix method.
                 let ghost = MeshPoint(x: avgX, y: relativeY, color: avgColor)
                 newGhosts.append(ghost)
             }
         } else {
-            // Logic for when the helper line is vertical (adjusting X).
+            /// Logic for when the helper line is vertical (adjusting X).
             for row in points {
-                // Find the index of the point just left of the target relativeX.
+                /// Find the index of the point just left of the target relativeX.
                 indexToUpdate = row.lastIndex(where: { $0.x < relativeX } ) ?? 0
                 
-                // Ensure indexToUpdate is within row bounds.
+                /// Ensure indexToUpdate is within row bounds.
                 guard indexToUpdate < row.count else { continue }
 
                 let prev = row[indexToUpdate]
-                // Get the next point, handling boundary cases.
+                /// Get the next point, handling boundary cases.
                 let nextIndex = min(indexToUpdate + 1, row.count - 1)
                 let next = row[nextIndex]
                 
-                // Interpolate Y position and color for the ghost.
+                /// Interpolate Y position and color for the ghost.
                 let avgY = (prev.y + next.y) / 2.0
-                let avgColor = Color(prev.color.mix(with: next.color, by: 0.5)) // Assumes Color.mix method.
+                let avgColor = Color(prev.color.mix(with: next.color, by: 0.5))
                 let ghost = MeshPoint(x: relativeX, y: avgY, color: avgColor)
                 newGhosts.append(ghost)
             }
         }
         
-        // Remove the ghost closest to the absolute cursor position to avoid visual clutter.
+        /// Remove the ghost closest to the absolute cursor position.
         let ignoredGhost = newGhosts.min(by: {
             let distA = hypot($0.x - Float(cursorPosition.x / size.width), $0.y - Float(cursorPosition.y / size.height))
             let distB = hypot($1.x - Float(cursorPosition.x / size.width), $1.y - Float(cursorPosition.y / size.height))
@@ -140,7 +140,6 @@ class CanvasState: ObservableObject {
         })
         newGhosts.removeAll { ignoredGhost?.id == $0.id }
         
-        // Update the published ghosts array with animation.
         //withAnimation(.snappy) {
             self.ghosts = newGhosts
         //}
@@ -153,20 +152,20 @@ class CanvasState: ObservableObject {
         
         if !orientLineHorizIfTrue {
             //print("Adding a new Column")
-            // All ghosts share the same X
+            /// All ghosts share the same X
             let newX = ghosts.first!.x
             
-            // Find insertion column index
+            /// Find insertion column index
             var insertIndex = 0
             if let firstRow = points.first {
                 insertIndex = firstRow.lastIndex(where: { $0.x < newX }) ?? 0
                 insertIndex += 1
             }
             
-            // Sort ghosts by Y to match rows
+            /// Sort ghosts by Y to match rows
             var sortedGhosts = ghosts.sorted { $0.y < $1.y }
 
-            // Reinsert missing point at cursor Y
+            /// Reinsert missing point at cursor Y
             let actualNormY = Float(cursorPosition.y / size.height)
             let insertAt = sortedGhosts.firstIndex(where: { $0.y > actualNormY }) ?? sortedGhosts.count
 
@@ -191,13 +190,13 @@ class CanvasState: ObservableObject {
             sortedGhosts.insert(replacement, at: insertAt)
             selectedPointIDs.append(replacement.id)
 
-            // Ensure count matches height
+            /// Ensure count matches height
             guard sortedGhosts.count == meshHeight else {
                 //print("Eeeyikes! it seems \(sortedGhosts.count) != target \(meshHeight)")
                 return
             }
             
-            // Insert into each row
+            /// Insert into each row
             for rowIndex in points.indices {
                 points[rowIndex].insert(sortedGhosts[rowIndex], at: insertIndex)
             }
@@ -210,26 +209,26 @@ class CanvasState: ObservableObject {
             let newY = ghosts.first!.y
             
             var insertIndex = 0
-            // the first point from every row
+            /// the first point from every row
             let firstColumn = points.map { $0.first! }
                 insertIndex = firstColumn.lastIndex(where: { $0.y < newY }) ?? 0
                 insertIndex += 1
             //print(insertIndex)
             
-            // Sort ghosts by X to match columns
+            /// Sort ghosts by X to match columns
             var sortedGhosts = ghosts.sorted { $0.x < $1.x }
 
-            // We removed the closest ghost during preview; reinsert a point at the cursor X
-            // NOTE: cursorPosition is already clamped in pixel space; we need normalized X/Y
-            // Recompute normalized cursor
+            /// We removed the closest ghost during preview; reinsert a point at the cursor X
+            /// NOTE: cursorPosition is already clamped in pixel space; we need normalized X/Y
+            /// Recompute normalized cursor
             let actualNormX = Float(cursorPosition.x / size.width)
             let insertAt = sortedGhosts.firstIndex(where: { $0.x > actualNormX }) ?? sortedGhosts.count
 
-            // Create a new point at the exact cursor projection (same Y as the new row)
+            /// Create a new point at the exact cursor projection (same Y as the new row)
             let newDotY = ghosts.first!.y
             let newDotX = Float(cursorPosition.x / size.width)
 
-            // Interpolate color from neighbors if possible
+            /// Interpolate color from neighbors if possible
             let prev = insertAt > 0 ? sortedGhosts[insertAt - 1] : nil
             let next = insertAt < sortedGhosts.count ? sortedGhosts[insertAt] : nil
             let newColor: Color = {
@@ -248,20 +247,20 @@ class CanvasState: ObservableObject {
             sortedGhosts.insert(replacement, at: insertAt)
             selectedPointIDs.append(replacement.id)
             
-            // Ensure count matches width
+            /// Ensure count matches width
             guard sortedGhosts.count == meshWidth else {
                 //print("Eeeyikes! it seems \(sortedGhosts.count) != target \(meshWidth)")
                 return
             }
 
             meshHeight += 1
-            // Insert row
+            /// Insert row
             points.insert(sortedGhosts, at: insertIndex)
             //print("- Mesh height increased")
             
         }
         //print("I've added so many ghosts!")
-        // Clear ghosts after committing
+        /// Clear ghosts after committing
         ghosts.removeAll()
          
     }
@@ -270,7 +269,7 @@ class CanvasState: ObservableObject {
     
     func updateModifierKeys(old: EventModifiers, new: EventModifiers) {
         self.isShiftDown = new.contains(.shift)
-        // Toggle orientation if Option key state changes.
+        /// Toggle orientation if Option key state changes.
         if old.contains(.option) != new.contains(.option) {
             self.orientLineHorizIfTrue.toggle()
         }

@@ -28,9 +28,15 @@ struct ContentView: View {
             }*/
             .toolbar {
                 ToolbarItem {
-                    Button("Select All Points", systemImage: "circle.grid.2x2.topleft.checkmark.filled") {
-                        canvasState.selectAllPoints()
+                    let isAll = canvasState.points.flatMap{ $0 }.count == canvasState.selectedPointIDs.count
+                    Button("\(isAll ? "Deselect" : "Select") All Points", systemImage: isAll ? "circle" : "checkmark.circle.fill") {
+                        if isAll {
+                            canvasState.selectedPointIDs = []
+                        } else {
+                            canvasState.selectAllPoints()
+                        }
                     }
+                    .contentTransition(.symbolEffect(.replace.magic(fallback: .upUp)))
                 }
                 ToolbarSpacer()
                 /* ToolbarItemGroup() {
