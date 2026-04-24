@@ -29,7 +29,6 @@ struct SelectedColorRow: View {
 
 #Preview {
     @Previewable @State var colors: [Color] = [.indigo, .blue, .cyan, .mint, .green]
-    var color: Color = .red
     
     VStack {
         SelectedColorRow(color: $colors[0])

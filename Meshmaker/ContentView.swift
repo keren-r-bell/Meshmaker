@@ -28,6 +28,11 @@ struct ContentView: View {
             }*/
             .toolbar {
                 ToolbarItem {
+                    Button("Fix frame", systemImage: "squareshape.dotted.squareshape") {
+                        canvasState.fixFrame()
+                    }
+                }
+                ToolbarItem {
                     let isAll = canvasState.points.flatMap{ $0 }.count == canvasState.selectedPointIDs.count
                     Button("\(isAll ? "Deselect" : "Select") All Points", systemImage: isAll ? "circle" : "checkmark.circle.fill") {
                         if isAll {

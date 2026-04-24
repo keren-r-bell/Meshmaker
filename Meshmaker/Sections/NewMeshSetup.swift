@@ -15,6 +15,7 @@ struct NewMeshSetup: View {
     
     var body: some View {
         VStack {
+            Spacer()
             /*HStack {
                 ColorPicker("Start", selection: $startingColor)
                 
@@ -27,7 +28,7 @@ struct NewMeshSetup: View {
                 RoundedRectangle(cornerRadius: 16)
                     .fill(LinearGradient(colors: [startingColor, endingColor], startPoint: .topLeading, endPoint: .bottomTrailing))
                     .stroke(.white, lineWidth: 3)
-                    .shadow(radius: 6, y: 2)
+                    .shadow(radius: 9, y: 5)
                     .frame(width: 128, height: 128)
                 SmallQuickPalette(color: $endingColor)
             }
@@ -45,33 +46,50 @@ struct NewMeshSetup: View {
                     canvasState.selectedPointIDs = []
                 }
             }
+            
+            Spacer()
         }
     }
 }
 
 struct SmallQuickPalette: View {
     @Binding var color: Color
+    let spacing = 3.0
     
     var body: some View {
-        HStack(spacing: 3) {
-            VStack(spacing: 3) {
-                Swatch(color: .brown)   .onTapGesture { color = .brown }    .frame(width: 16, height: 16)
-                Swatch(color: .red)     .onTapGesture { color = .red }      .frame(width: 16, height: 16)
-                Swatch(color: .orange)  .onTapGesture { color = .orange }   .frame(width: 16, height: 16)
-                Swatch(color: .yellow)  .onTapGesture { color = .yellow }   .frame(width: 16, height: 16)
+        HStack(alignment: .center, spacing: spacing) {
+            VStack(spacing: spacing) {
+                SetupSwatch(boundColor: $color, color: .purple)
+                SetupSwatch(boundColor: $color, color: .pink)
+                SetupSwatch(boundColor: $color, color: .red)
+                SetupSwatch(boundColor: $color, color: .orange)
+                SetupSwatch(boundColor: $color, color: .yellow)
+                SetupSwatch(boundColor: $color, color: .brown)
             }
-            VStack(spacing: 3) {
-                Swatch(color: .green)   .onTapGesture { color = .green }    .frame(width: 16, height: 16)
-                Swatch(color: .mint)    .onTapGesture { color = .mint }     .frame(width: 16, height: 16)
-                Swatch(color: .teal)    .onTapGesture { color = .teal }     .frame(width: 16, height: 16)
-                Swatch(color: .cyan)    .onTapGesture { color = .cyan }     .frame(width: 16, height: 16)
-            }
-            VStack(spacing: 3) {
-                Swatch(color: .blue)    .onTapGesture { color = .blue }     .frame(width: 16, height: 16)
-                Swatch(color: .indigo)  .onTapGesture { color = .indigo }   .frame(width: 16, height: 16)
-                Swatch(color: .purple)  .onTapGesture { color = .purple }   .frame(width: 16, height: 16)
-                Swatch(color: .pink)    .onTapGesture { color = .pink }     .frame(width: 16, height: 16)
+            VStack(spacing: spacing) {
+                SetupSwatch(boundColor: $color, color: .green)
+                SetupSwatch(boundColor: $color, color: .mint)
+                SetupSwatch(boundColor: $color, color: .teal)
+                SetupSwatch(boundColor: $color, color: .cyan)
+                SetupSwatch(boundColor: $color, color: .blue)
+                SetupSwatch(boundColor: $color, color: .indigo)
             }
         }
     }
+    
+    struct SetupSwatch: View {
+        @Binding var boundColor: Color
+        var color: Color
+        
+        var body: some View {
+            Swatch(color: color, stroke: boundColor == color ? .blue : .white)
+                .onTapGesture {
+                    withAnimation {
+                        boundColor = color
+                    }
+                }
+                .frame(width: 16, height: 16)
+        }
+    }
 }
+

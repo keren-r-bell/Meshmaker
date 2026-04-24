@@ -324,6 +324,19 @@ class CanvasState: ObservableObject {
         }
     }
     
+    func fixFrame() {
+        for index in 0 ..< meshWidth {
+            self.points[0][index].x = Float(1 / (meshWidth - 1)) * Float(index)
+        }
+        for row in 1 ..< points.count - 1 {
+            self.points[row][0].x = 0.0
+            self.points[row][meshWidth - 1].x = 1.0
+        }
+        for index in 0 ..< meshWidth {
+            self.points[meshHeight-1][index].x = Float(1 / (meshWidth - 1)) * Float(index)
+        }
+    }
+    
     
     // MARK: - Computed Properties for View Compatibility
     var allPointBindings: [Binding<MeshPoint>] {

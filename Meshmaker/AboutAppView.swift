@@ -100,6 +100,27 @@ struct AboutView: View {
                 Color(hue: 0.10, saturation: 0.55, brightness: 0.80), Color(hue: 0.04, saturation: 0.50, brightness: 0.56), .brown
             ],
             smoothsColors: true
+        ),
+        MeshGradient(
+            width: 3,
+            height: 6,
+            points: [
+                [0, 0], [0.885954, 0], [1, 0],
+                [0, 0.484201], [0.302242, 0.26588], [1, 0.797721],
+                [0, 0.0922431], [0.582495, 0.205872], [1, 0.322167],
+                [0, 0.644323], [0.387924, 0.649365], [1, 0.160945],
+                [0, 0.724082], [0.603394, 0.425781], [1, 0.724082],
+                [0, 1], [0.885954, 1], [1, 1]
+            ],
+            colors: [
+                .yellow, Color(hue: 0.11, saturation: 0.85, brightness: 1.00), Color(hue: 0.09, saturation: 0.78, brightness: 1.00),
+                Color(hue: 0.11, saturation: 0.83, brightness: 1.00), Color(hue: 0.14, saturation: 0.69, brightness: 1.00), Color(hue: 0.11, saturation: 0.83, brightness: 1.00),
+                Color(hue: 0.10, saturation: 0.80, brightness: 1.00), Color(hue: 0.10, saturation: 0.80, brightness: 1.00), Color(hue: 0.10, saturation: 0.80, brightness: 1.00),
+                Color(hue: 0.08, saturation: 0.77, brightness: 1.00), Color(hue: 0.05, saturation: 0.72, brightness: 1.00), Color(hue: 0.08, saturation: 0.77, brightness: 0.90),
+                Color(hue: 0.06, saturation: 0.73, brightness: 1.00), Color(hue: 1.00, saturation: 0.63, brightness: 1.00), Color(hue: 0.03, saturation: 0.70, brightness: 1.00),
+                Color(hue: 0.03, saturation: 0.70, brightness: 1.00), Color(hue: 0.00, saturation: 0.68, brightness: 1.00), Color(hue: 0.97, saturation: 0.82, brightness: 0.80)
+            ],
+            smoothsColors: true
         )
     ]
     @State var randomGrad = 0

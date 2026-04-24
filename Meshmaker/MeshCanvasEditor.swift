@@ -136,7 +136,14 @@ struct MeshCanvasEditor: View {
                 }
                 .onEnded { value in
                     canvasState.isMouseDown = false
-                    canvasState.addGhostsToPoints(size: geometry.size)
+                    
+                    let mouseY = Float(value.location.y / geometry.size.height)
+                    let mouseX = Float(value.location.x / geometry.size.width)
+                    if mouseY > 1 || mouseY < 0 || mouseX > 1 || mouseX < 0 {
+                        print("Cursor out of canvas on drag end, user does not want to place points.")
+                    } else {
+                        canvasState.addGhostsToPoints(size: geometry.size)
+                    }
                 }
         )
     }
