@@ -59,6 +59,7 @@ struct CodeExportBox: View {
                 .cornerRadius(8)
                 .padding(8)
                 .disabled(true)
+                .focusable(false)
                 .overlay(alignment: .bottomTrailing) {
                     Button("Copy to Clipboard", systemImage: "doc.on.doc") {
                         copyMeshCode(from: canvasState)

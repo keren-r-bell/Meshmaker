@@ -77,7 +77,7 @@ struct SmallQuickPalette: View {
         }
     }
     
-    struct SetupSwatch: View {
+    private struct SetupSwatch: View {
         @Binding var boundColor: Color
         var color: Color
         

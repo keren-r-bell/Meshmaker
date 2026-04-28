@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 struct PaletteBox: View {
     @EnvironmentObject var canvasState: CanvasState
@@ -45,46 +46,47 @@ struct SimilarColors: View {
     var body: some View {
         HStack(spacing: 2) {
             let hueLeft = Color(hue: hue - 0.05, saturation: sat, brightness: bri)
-            Rectangle()
-                .fill(hueLeft)
+            SimilarSwatch(affectedColor: $color, color: hueLeft)
                 .clipShape(.rect(topLeadingCorner: 8, topTrailingCorner: 2, bottomLeadingCorner: 8, bottomTrailingCorner: 2))
-                .onTapGesture { color = hueLeft }
             
             VStack(spacing: 2) {
-                let briUp =   Color(hue: hue, saturation: sat, brightness: bri + 0.1)
-                let briDown = Color(hue: hue, saturation: sat, brightness: bri - 0.1)
-                RoundedRectangle(cornerRadius: 2)
-                    .fill(briUp)
-                    .onTapGesture { color = briUp }
-                RoundedRectangle(cornerRadius: 2)
-                    .fill(briDown)
-                    .onTapGesture { color = briDown }
+                let briUp =   Color(hue: hue, saturation: sat, brightness: min(bri + 0.14, 1.0))
+                let briDown = Color(hue: hue, saturation: sat, brightness: max(bri - 0.14, 0.0))
+                
+                SimilarSwatch(affectedColor: $color, color: briUp)
+                SimilarSwatch(affectedColor: $color, color: briDown)
             }
             
             RoundedRectangle(cornerRadius: 2)
                 .fill(color)
+                .padding(.horizontal, 2)
             
             VStack(spacing: 2) {
-                let satUp =   Color(hue: hue, saturation: sat + 0.1, brightness: bri)
-                let satDown = Color(hue: hue, saturation: sat - 0.1, brightness: bri)
-                RoundedRectangle(cornerRadius: 2)
-                    .fill(satUp)
-                    .onTapGesture { color = satUp }
-                RoundedRectangle(cornerRadius: 2)
-                    .fill(satDown)
-                    .onTapGesture { color = satDown }
+                let satUp = Color(hue: hue, saturation: min(sat + 0.18, 1.0), brightness: bri)
+                let satDown = Color(hue: hue, saturation: max(sat - 0.18, 0.0), brightness: bri)
+                SimilarSwatch(affectedColor: $color, color: satUp)
+                SimilarSwatch(affectedColor: $color, color: satDown)
             }
             
             let overHue = hue + 0.05 //Small fix to wrap color around
-            let hueRight = Color(hue: overHue > 1.0 ? overHue - 1.0: overHue, saturation: sat, brightness: bri)
-            Rectangle()
-                .fill(hueRight)
+            let hueRight = Color(hue: overHue > 1.0 ? overHue - 1.0 : overHue, saturation: sat, brightness: bri)
+            SimilarSwatch(affectedColor: $color, color: hueRight)
                 .clipShape(.rect(topLeadingCorner: 2, topTrailingCorner: 8, bottomLeadingCorner: 2, bottomTrailingCorner: 8))
-                .onTapGesture { color = hueRight }
         }
         .padding(4)
         .background { RoundedRectangle(cornerRadius: 12).fill(.white) }
         .shadow(radius: 2, y: 1)
+    }
+    
+    private struct SimilarSwatch: View {
+        @Binding var affectedColor: Color
+        var color: Color = .blue
+        
+        var body: some View {
+            Rectangle()
+                .fill(color)
+                .onTapGesture { affectedColor = color; ColorPaletteTutorialTip.pressedColorsBefore = true }
+        }
     }
 }
 

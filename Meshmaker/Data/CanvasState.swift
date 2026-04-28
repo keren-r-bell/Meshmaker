@@ -326,17 +326,49 @@ class CanvasState: ObservableObject {
     
     func fixFrame() {
         for index in 0 ..< meshWidth {
-            self.points[0][index].x = Float(1 / (meshWidth - 1)) * Float(index)
+            //self.points[0][index].x = (1.0 / Float(meshWidth - 1)) * Float(index)
+            self.points[0][index].y = 0.0
         }
-        for row in 1 ..< points.count - 1 {
+        
+        for row in 0 ..< points.count {
             self.points[row][0].x = 0.0
             self.points[row][meshWidth - 1].x = 1.0
         }
+        
         for index in 0 ..< meshWidth {
-            self.points[meshHeight-1][index].x = Float(1 / (meshWidth - 1)) * Float(index)
+            //self.points[meshHeight-1][index].x = (1.0 / Float(meshWidth - 1)) * Float(index)
+            self.points[meshHeight-1][index].y = 1.0
         }
     }
     
+    func straightenFrame() {
+        for index in 0 ..< meshWidth {
+            self.points[0][index].x = (1.0 / Float(meshWidth - 1)) * Float(index)
+            self.points[0][index].y = 0.0
+        }
+        
+        for row in 1 ..< points.count - 1 {
+            let rowY = (1.0 / Float(meshHeight - 1)) * Float(row)
+            self.points[row][0].x = 0.0
+            self.points[row][0].y = rowY
+            self.points[row][meshWidth - 1].x = 1.0
+            self.points[row][meshWidth - 1].y = rowY
+        }
+        
+        for index in 0 ..< meshWidth {
+            self.points[meshHeight-1][index].x = (1.0 / Float(meshWidth - 1)) * Float(index)
+            self.points[meshHeight-1][index].y = 1.0
+        }
+    }
+    
+    func straightenMesh() {
+        for row in 0 ..< points.count {
+            for index in 0 ..< meshWidth {
+                self.points[row][index].x = (1.0 / Float(meshWidth - 1)) * Float(index)
+                self.points[row][index].y = (1.0 / Float(meshHeight - 1)) * Float(row)
+            }
+        }
+    }
     
     // MARK: - Computed Properties for View Compatibility
     var allPointBindings: [Binding<MeshPoint>] {

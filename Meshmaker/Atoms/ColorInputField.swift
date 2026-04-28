@@ -34,7 +34,7 @@ struct ColorInputField: View {
                 .contentShape(.containerRelative)
                 .onContinuousHover { phase in
                     switch phase {
-                    case .active(let _):
+                    case .active:
                         isHovering = true
                     case .ended:
                         isHovering = false

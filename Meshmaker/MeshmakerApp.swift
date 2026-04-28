@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 @main
 struct MeshmakerApp: App {
@@ -59,8 +60,11 @@ struct MeshmakerApp: App {
             }
             
             CommandGroup(replacing: .help) {
-                Button("Meshmaker Tips & Tricks", systemImage: "questionmark.square.fill") {
+                Button("Meshmaker Tips & Tricks", systemImage: "questionmark") {
                     openWindow(id: "help")
+                }
+                Button("The Color Palette", systemImage: "paintpalette") {
+                    openWindow(id: "colorHelp")
                 }
             }
             
@@ -72,6 +76,8 @@ struct MeshmakerApp: App {
                 PresetMenu()
                     .environmentObject(canvasState)
                 Divider()
+                FixFrameButton()
+                    .environmentObject(canvasState)
                 Button("Select All Points", systemImage: "checkmark.circle.fill") {
                     canvasState.selectAllPoints()
                 }
@@ -97,5 +103,24 @@ struct MeshmakerApp: App {
             HelpWindowView()
         }
         .commandsRemoved()
+        
+        Window("The Color Palette", id: "colorHelp") {
+            HelpWindowView(DocName: "ColorHelp")
+        }
+        .commandsRemoved()
+    }
+    
+    init() {
+        do {
+            #if DEBUG
+            try Tips.resetDatastore()
+            #endif
+            
+            // Configure and load all tips in the app.
+            try Tips.configure()
+        }
+        catch {
+            print("Error initializing tips: \(error)")
+        }
     }
 }

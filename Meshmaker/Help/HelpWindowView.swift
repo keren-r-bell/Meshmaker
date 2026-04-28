@@ -8,15 +8,18 @@
 import SwiftUI
 
 struct HelpWindowView: View {
+    var DocName: String = "HelpDocument"
+    
     var body: some View {
         ScrollView {
             VStack {
-                if let doc = loadMarkdown("HelpDocument") {
+                if let doc = loadMarkdown(DocName) {
                     let renderer = MarkdownRenderer()
                     renderer.render(doc)
                 }
             }.safeAreaPadding(24)
         }
+        .frame(width: 540, height: 360)
     }
 }
 

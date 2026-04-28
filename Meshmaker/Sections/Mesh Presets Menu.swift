@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 struct PresetMenu: View {
     @EnvironmentObject var canvasState: CanvasState
@@ -13,6 +14,7 @@ struct PresetMenu: View {
     var body: some View {
         Menu("New...", systemImage: "plus") {
             Button("New", systemImage: "square.dotted") {
+                NewPaletteTutorial.usedInitialBefore = true
                 withAnimation(.bouncy) {
                     canvasState.meshWidth = 2
                     canvasState.meshHeight = 2

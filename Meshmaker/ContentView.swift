@@ -5,9 +5,12 @@
 //  Created by Keren R. Bell on 21/3/26.
 //
 import SwiftUI
+import TipKit
 
 struct ContentView: View {
     @EnvironmentObject var canvasState: CanvasState
+    
+    let newPaletteTutorial = NewPaletteTutorial()
     
     var body: some View {
         NavigationStack {
@@ -28,9 +31,7 @@ struct ContentView: View {
             }*/
             .toolbar {
                 ToolbarItem {
-                    Button("Fix frame", systemImage: "squareshape.dotted.squareshape") {
-                        canvasState.fixFrame()
-                    }
+                    FixFrameButton()
                 }
                 ToolbarItem {
                     let isAll = canvasState.points.flatMap{ $0 }.count == canvasState.selectedPointIDs.count
@@ -51,9 +52,39 @@ struct ContentView: View {
                 ToolbarSpacer()*/
                 ToolbarItem() {
                     PresetMenu()
+                        .popoverTip(newPaletteTutorial, arrowEdge: .trailing)
                 }
             }
 
         }
+    }
+}
+
+struct NewPaletteTutorial: Tip {
+    
+    @Parameter static var usedInitialBefore: Bool = false
+    
+    var title: Text {
+        Text("Start from Scratch")
+    }
+
+
+    var message: Text? {
+        Text("Make your own mesh gradient from basic colors.")
+    }
+
+
+    var image: Image? {
+        Image(systemName: "squareshape.split.2x2.dotted.inside")
+    }
+    
+    var rules: [Rule] {
+        #Rule(Self.$usedInitialBefore) {
+            $0 == false
+        }
+    }
+    var options: [any Option] {
+        MaxDisplayCount(3)
+        MaxDisplayDuration(60.0)
     }
 }
