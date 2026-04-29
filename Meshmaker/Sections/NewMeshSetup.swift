@@ -89,6 +89,7 @@ struct SmallQuickPalette: View {
                     }
                 }
                 .frame(width: 16, height: 16)
+                .draggable(color)
         }
     }
 }

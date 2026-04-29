@@ -18,6 +18,13 @@ struct PointOnCanvas: View {
             .padding()
             .contentShape(.circle)
             .pointerStyle(canvasState.isHovering ? .grabIdle : .grabActive)
+        
+            .dropDestination(for: Color.self) { colors, _ in
+                guard let newColor = colors.first else { return false }
+                meshPoint.color = newColor
+                return true
+            }
+        
             .onTapGesture {
                 canvasState.handleNewSelection(meshPoint, isDragging: false)
                 if canvasState.selectedPointIDs.contains(where: { $0 == meshPoint.id } ) && !canvasState.isShiftDown {
@@ -50,7 +57,6 @@ struct PointOnCanvas: View {
                 }
             }
         */
-            //code for being dropped a Color property like from a colorpicker or Swatch and changing the color to fit
          
     }
 }

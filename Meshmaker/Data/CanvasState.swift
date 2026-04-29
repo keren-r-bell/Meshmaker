@@ -266,7 +266,8 @@ class CanvasState: ObservableObject {
     }
     
     
-    
+    /// Currently unused.
+    /*
     func updateModifierKeys(old: EventModifiers, new: EventModifiers) {
         self.isShiftDown = new.contains(.shift)
         /// Toggle orientation if Option key state changes.
@@ -274,7 +275,7 @@ class CanvasState: ObservableObject {
             self.orientLineHorizIfTrue.toggle()
         }
         self.isOptionDown = new.contains(.option)
-    }
+    }*/
     
     func applyColorToSelection(_ color: Color) {
         for binding in allPointBindings {

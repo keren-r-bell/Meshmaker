@@ -14,7 +14,7 @@ struct PaletteBox: View {
     var body: some View {
         VStack(spacing: 6) {
             HStack(spacing: 6) {
-                Swatch(color: .green).onTapGesture { canvasState.applyColorToSelection(.green) }
+                Swatch(color: .green).onTapGesture { canvasState.applyColorToSelection (.green) }
                 Swatch(color: .yellow).onTapGesture { canvasState.applyColorToSelection(.yellow) }
                 Swatch(color: .orange).onTapGesture { canvasState.applyColorToSelection(.orange) }
                 Swatch(color: .red).onTapGesture { canvasState.applyColorToSelection(.red) }
