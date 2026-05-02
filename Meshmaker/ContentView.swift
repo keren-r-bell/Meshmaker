@@ -9,6 +9,7 @@ import TipKit
 
 struct ContentView: View {
     @EnvironmentObject var canvasState: CanvasState
+    @Environment(\.undoManager) private var undoManager
     
     let newPaletteTutorial = NewPaletteTutorial()
     
@@ -30,6 +31,11 @@ struct ContentView: View {
                 InspectorView()
             }*/
             .toolbar {
+                ToolbarItemGroup() {
+                    UndoButton().environmentObject(canvasState)
+                    RedoButton().environmentObject(canvasState)
+                }
+                ToolbarSpacer()
                 ToolbarItem {
                     FixFrameButton()
                 }
@@ -45,17 +51,17 @@ struct ContentView: View {
                     .contentTransition(.symbolEffect(.replace.magic(fallback: .upUp)))
                 }
                 ToolbarSpacer()
-                /* ToolbarItemGroup() {
-                    Button("Undo", systemImage: "arrow.uturn.backward") {}
-                    Button("Redo", systemImage: "arrow.uturn.forward") {}.disabled(true)
-                }
-                ToolbarSpacer()*/
                 ToolbarItem() {
                     PresetMenu()
                         .popoverTip(newPaletteTutorial, arrowEdge: .trailing)
                 }
             }
-
+            .onAppear {
+                canvasState.setUndoManager(undoManager)
+            }
+            .onChange(of: undoManager) { oldValue, newValue in
+                canvasState.setUndoManager(newValue)
+            }
         }
     }
 }

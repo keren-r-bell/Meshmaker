@@ -9,7 +9,8 @@ This app was made because of how frustrating I found coding even simple placehol
 This aims to be a comprehensive canvas editing tool for its purpose, complete with modifier keys, keyboard shortcuts and color harmony.
 
 ### TO DO:
-- [ ] Figure out color editing & harmony - See [#1](https://github.com/keren-r-bell/Meshmaker/issues/1)
+- [x] Figure out color editing & harmony - See [#1](https://github.com/keren-r-bell/Meshmaker/issues/1)
 - [x] Add Keyboard Shortcuts
 - [x] Add Modifier Key Controls (Though, see [#2](https://github.com/keren-r-bell/Meshmaker/issues/2))
 - [x] Implement adding points - See [#4](https://github.com/keren-r-bell/Meshmaker/issues/4)
+- [x] Add Undo & Redo - See [#5](https://github.com/keren-r-bell/Meshmaker/issues/5)

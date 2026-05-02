@@ -21,6 +21,7 @@ struct PointOnCanvas: View {
         
             .dropDestination(for: Color.self) { colors, _ in
                 guard let newColor = colors.first else { return false }
+                canvasState.markUndoPoint("Change Color")
                 meshPoint.color = newColor
                 return true
             }

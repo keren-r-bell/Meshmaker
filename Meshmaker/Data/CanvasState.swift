@@ -5,6 +5,21 @@ import Combine
 /// An ObservableObject that holds the state and logic for the mesh canvas.
 class CanvasState: ObservableObject {
     
+    // MARK: Undo/Redo Support
+    weak var undoManager: UndoManager?
+    
+    // Snapshot used to capture the state at the beginning of a drag
+    private var pendingDragSnapshot: CanvasSnapshot?
+    
+    // A lightweight snapshot of the canvas state for undo/redo
+    struct CanvasSnapshot {
+        var points: [[MeshPoint]]
+        var meshWidth: Int
+        var meshHeight: Int
+        var selectedPointIDs: [UUID]
+        var smoothGrads: Bool
+    }
+    
     // MARK: Mesh Grid State
     @Published var points: [[MeshPoint]] = []
     
@@ -47,6 +62,50 @@ class CanvasState: ObservableObject {
     }
     
     // MARK: Methods
+    
+    // MARK: - Undo/Redo Helpers
+    /// Provide the scene's UndoManager from the view layer.
+    func setUndoManager(_ manager: UndoManager?) {
+        self.undoManager = manager
+    }
+
+    /// Create a deep snapshot of the current canvas state.
+    private func makeSnapshot() -> CanvasSnapshot {
+        CanvasSnapshot(
+            points: points,
+            meshWidth: meshWidth,
+            meshHeight: meshHeight,
+            selectedPointIDs: selectedPointIDs,
+            smoothGrads: smoothGrads
+        )
+    }
+
+    /// Apply a snapshot back onto the model.
+    private func applySnapshot(_ snapshot: CanvasSnapshot) {
+        self.points = snapshot.points
+        self.meshWidth = snapshot.meshWidth
+        self.meshHeight = snapshot.meshHeight
+        self.selectedPointIDs = snapshot.selectedPointIDs
+        self.smoothGrads = snapshot.smoothGrads
+    }
+
+    /// Register an undo that restores the passed snapshot, and chain a redo.
+    private func registerUndo(to snapshot: CanvasSnapshot, actionName: String) {
+        undoManager?.registerUndo(withTarget: self) { target in
+            // Capture current state for redo before applying the undo snapshot
+            let redoSnapshot = target.makeSnapshot()
+            target.applySnapshot(snapshot)
+            // Chain redo
+            target.registerUndo(to: redoSnapshot, actionName: actionName)
+        }
+        undoManager?.setActionName(actionName)
+    }
+
+    /// Convenience to capture the current state and push it to the undo stack.
+    private func captureUndoPoint(actionName: String) {
+        let snapshot = makeSnapshot()
+        registerUndo(to: snapshot, actionName: actionName)
+    }
     
     func orientLine(cursor: CGPoint, size: CGSize) {
         let distFromTop = cursor.y
@@ -196,6 +255,10 @@ class CanvasState: ObservableObject {
                 return
             }
             
+            // Register undo just before committing a new column
+            let snapshot = makeSnapshot()
+            registerUndo(to: snapshot, actionName: "Insert Column")
+            
             /// Insert into each row
             for rowIndex in points.indices {
                 points[rowIndex].insert(sortedGhosts[rowIndex], at: insertIndex)
@@ -253,6 +316,10 @@ class CanvasState: ObservableObject {
                 return
             }
 
+            // Register undo just before committing a new row
+            let snapshot = makeSnapshot()
+            registerUndo(to: snapshot, actionName: "Insert Row")
+
             meshHeight += 1
             /// Insert row
             points.insert(sortedGhosts, at: insertIndex)
@@ -278,6 +345,9 @@ class CanvasState: ObservableObject {
     }*/
     
     func applyColorToSelection(_ color: Color) {
+        if !selectedPointIDs.isEmpty {
+            captureUndoPoint(actionName: "Change Color")
+        }
         for binding in allPointBindings {
             if selectedPointIDs.contains(binding.wrappedValue.id) {
                 binding.wrappedValue.color = color
@@ -309,6 +379,11 @@ class CanvasState: ObservableObject {
     }
     
     func moveSelectedPoints(by delta: CGSize, isFinalizing: Bool = false) {
+        // Capture the initial state at the start of a drag so we can undo the whole gesture
+        if !isFinalizing && pendingDragSnapshot == nil && !selectedPointIDs.isEmpty {
+            pendingDragSnapshot = makeSnapshot()
+        }
+        
         for binding in allPointBindings {
             if selectedPointIDs.contains(binding.wrappedValue.id) {
                 binding.wrappedValue.x += Float(delta.width)
@@ -323,9 +398,18 @@ class CanvasState: ObservableObject {
                 }
             }
         }
+        
+        if isFinalizing {
+            if let snapshot = pendingDragSnapshot {
+                let actionName = selectedPointIDs.count > 1 ? "Move \(selectedPointIDs.count)  Points" : "Move Point"
+                registerUndo(to: snapshot, actionName: actionName)
+            }
+            pendingDragSnapshot = nil
+        }
     }
     
     func fixFrame() {
+        captureUndoPoint(actionName: "Fix Frame")
         for index in 0 ..< meshWidth {
             //self.points[0][index].x = (1.0 / Float(meshWidth - 1)) * Float(index)
             self.points[0][index].y = 0.0
@@ -343,6 +427,7 @@ class CanvasState: ObservableObject {
     }
     
     func straightenFrame() {
+        captureUndoPoint(actionName: "Straighten Frame")
         for index in 0 ..< meshWidth {
             self.points[0][index].x = (1.0 / Float(meshWidth - 1)) * Float(index)
             self.points[0][index].y = 0.0
@@ -363,6 +448,7 @@ class CanvasState: ObservableObject {
     }
     
     func straightenMesh() {
+        captureUndoPoint(actionName: "Straighten Mesh")
         for row in 0 ..< points.count {
             for index in 0 ..< meshWidth {
                 self.points[row][index].x = (1.0 / Float(meshWidth - 1)) * Float(index)
@@ -401,4 +487,32 @@ class CanvasState: ObservableObject {
     var flattenedMeshPoints: [MeshPoint] {
         points.flatMap { $0 }
     }
+    
+    // MARK: - Public Undo/Redo API
+    func undo() {
+        undoManager?.undo()
+    }
+    
+    func redo() {
+        undoManager?.redo()
+    }
+
+    /// Expose a simple way for views to create an undo step before making direct mutations.
+    func markUndoPoint(_ actionName: String) {
+        captureUndoPoint(actionName: actionName)
+    }
+
+    // MARK: - Templates
+    /// Apply a complete mesh template and register undo.
+    func applyTemplate(_ preset: [[MeshPoint]], actionName: String = "Apply Template") {
+        let snapshot = makeSnapshot()
+        // Mutate state
+        self.points = preset
+        self.meshHeight = preset.count
+        self.meshWidth = preset.first?.count ?? 0
+        self.selectedPointIDs = []
+        // Register undo to restore previous state
+        registerUndo(to: snapshot, actionName: actionName)
+    }
 }
+

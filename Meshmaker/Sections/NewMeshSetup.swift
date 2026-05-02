@@ -35,15 +35,13 @@ struct NewMeshSetup: View {
             
             Button("Create") {
                 withAnimation(.bouncy) {
-                    canvasState.meshHeight = 2
-                    canvasState.meshWidth = 2
-                    canvasState.points = [
+                    let preset: [[MeshPoint]] = [
                         [MeshPoint(x: 0.0, y: 0.0, color: startingColor),
                          MeshPoint(x: 1.0, y: 0.0, color: startingColor.mix(with: endingColor, by: 0.3))],
                         [MeshPoint(x: 0.0, y: 1.0, color: endingColor.mix(with: startingColor, by: 0.3)),
-                         MeshPoint(x: 1.0, y: 1.0, color: endingColor), ],
+                         MeshPoint(x: 1.0, y: 1.0, color: endingColor)]
                     ]
-                    canvasState.selectedPointIDs = []
+                    canvasState.applyTemplate(preset, actionName: "Create New Mesh")
                 }
             }
             

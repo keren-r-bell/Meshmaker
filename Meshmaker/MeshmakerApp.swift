@@ -18,6 +18,9 @@ struct MeshmakerApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(canvasState)
+                .onReceive(NotificationCenter.default.publisher(for: .similarColorWillApply)) { _ in
+                    canvasState.markUndoPoint("Adjust Color")
+                }
                 .onAppear {
                     #if os(macOS)
                     NSWindow.allowsAutomaticWindowTabbing = false
@@ -66,6 +69,13 @@ struct MeshmakerApp: App {
                 Button("The Color Palette", systemImage: "paintpalette") {
                     openWindow(id: "colorHelp")
                 }
+            }
+            
+            CommandGroup(replacing: .undoRedo) {
+                UndoButton().environmentObject(canvasState)
+                    .keyboardShortcut("Z")
+                RedoButton().environmentObject(canvasState)
+                    .keyboardShortcut("Z", modifiers: .command.union(.shift))
             }
             
             CommandMenu("Edit") {
@@ -124,3 +134,4 @@ struct MeshmakerApp: App {
         }
     }
 }
+

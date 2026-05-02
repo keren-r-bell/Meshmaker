@@ -8,6 +8,10 @@
 import SwiftUI
 import TipKit
 
+extension Notification.Name {
+    static let similarColorWillApply = Notification.Name("SimilarColorWillApply")
+}
+
 struct PaletteBox: View {
     @EnvironmentObject var canvasState: CanvasState
     
@@ -85,7 +89,15 @@ struct SimilarColors: View {
         var body: some View {
             Rectangle()
                 .fill(color)
-                .onTapGesture { affectedColor = color; ColorPaletteTutorialTip.pressedColorsBefore = true }
+                .onTapGesture {
+                    // Attempt to find a CanvasState in the environment via the responder chain
+                    // Since SimilarColors is used inside the inspector that has access to the canvas state,
+                    // we can broadcast a notification or use an explicit environment object if available.
+                    // To keep this localized, post a notification that CanvasState can observe (simple and native).
+                    NotificationCenter.default.post(name: .similarColorWillApply, object: nil)
+                    affectedColor = color
+                    ColorPaletteTutorialTip.pressedColorsBefore = true
+                }
         }
     }
 }
