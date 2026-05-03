@@ -19,8 +19,22 @@ struct Swatch: View {
             .stroke(stroke, lineWidth: 2)
             .draggable(color) {
                 RoundedRectangle(cornerRadius: 8)
+                    .fill(color)
                     .frame(width: 32, height: 24)
-                    .foregroundStyle(color.gradient)
             }
     }
+}
+
+#Preview {
+    VStack {
+        ColorPicker("Color", selection: .constant(.green))
+        HStack {
+            Swatch(color: .orange)
+            Swatch(color: .red)
+            Swatch(color: .purple)
+            Swatch(color: .blue)
+        }
+        .frame(width: 200, height: 40)
+    }
+    .environmentObject(CanvasState())
 }

@@ -73,7 +73,7 @@ struct MeshCanvasEditor: View {
                         .overlay {
                             if canvasState.selectedPointIDs.contains(meshPoint.id) {
                                 Circle()
-                                    .stroke(.blue, lineWidth: 3)
+                                    .stroke(.accent, lineWidth: 3)
                                     .frame(width: 16, height: 16)
                             }
                         }

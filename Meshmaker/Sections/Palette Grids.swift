@@ -64,6 +64,11 @@ struct SimilarColors: View {
             RoundedRectangle(cornerRadius: 2)
                 .fill(color)
                 .padding(.horizontal, 2)
+                .draggable(color) {
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(color)
+                        .frame(width: 32, height: 24)
+                }
             
             VStack(spacing: 2) {
                 let satUp = Color(hue: hue, saturation: min(sat + 0.18, 1.0), brightness: bri)
@@ -97,6 +102,11 @@ struct SimilarColors: View {
                     NotificationCenter.default.post(name: .similarColorWillApply, object: nil)
                     affectedColor = color
                     ColorPaletteTutorialTip.pressedColorsBefore = true
+                }
+                .draggable(color) {
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(color)
+                        .frame(width: 32, height: 24)
                 }
         }
     }
