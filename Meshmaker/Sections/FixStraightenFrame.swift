@@ -12,7 +12,7 @@ struct FixFrameButton: View {
     
     var body: some View {
         Button(
-            canvasState.isOptionDown ? canvasState.isShiftDown ? "Straighten All Points" : "Straighten Frame" : "Fit frame",
+            canvasState.isOptionDown ? canvasState.isShiftDown ? "Straighten All Points" : "Straighten Frame" : "Fit Frame",
             systemImage: canvasState.isOptionDown ? canvasState.isShiftDown ? "squareshape.split.3x3" : "squareshape.dotted.squareshape" : "squareshape"
         ) {
             withAnimation(.snappy) {
@@ -27,5 +27,14 @@ struct FixFrameButton: View {
                 }
             }
         }
+        /*
+        Button("Fit Frame") { canvasState.fixFrame() }
+            .modifierKeyAlternate(.option) {
+                Button("Straighten Frame") { canvasState.straightenFrame() }
+                    .modifierKeyAlternate(.shift) {
+                        Button("Straighten Mesh") { canvasState.straightenMesh() }
+                    }
+            }
+         */ /// Maybe this works?
     }
 }

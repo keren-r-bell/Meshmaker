@@ -9,6 +9,7 @@ import TipKit
 
 struct ContentView: View {
     @EnvironmentObject var canvasState: CanvasState
+    @EnvironmentObject var cursorState: CursorState
     @Environment(\.undoManager) private var undoManager
     
     let newPaletteTutorial = NewPaletteTutorial()

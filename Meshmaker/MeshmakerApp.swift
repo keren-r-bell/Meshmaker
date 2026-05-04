@@ -13,11 +13,13 @@ struct MeshmakerApp: App {
     @Environment(\.openWindow) private var openWindow
     
     @StateObject var canvasState = CanvasState(width: 3, height: 3, preset: preset1)
+    @StateObject var cursorState = CursorState()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(canvasState)
+                .environmentObject(cursorState)
                 .onReceive(NotificationCenter.default.publisher(for: .similarColorWillApply)) { _ in
                     canvasState.markUndoPoint("Adjust Color")
                 }

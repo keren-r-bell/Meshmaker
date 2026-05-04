@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PointOnCanvas: View {
     @EnvironmentObject var canvasState: CanvasState
+    @EnvironmentObject var cursorState: CursorState
     
     @Binding var meshPoint: MeshPoint
     @State var isPopoverVisible: Bool = false
@@ -17,7 +18,7 @@ struct PointOnCanvas: View {
         Point(color: meshPoint.color)
             .padding()
             .contentShape(.circle)
-            .pointerStyle(canvasState.isHovering ? .grabIdle : .grabActive)
+            .pointerStyle(cursorState.isHovering ? .grabIdle : .grabActive)
         
             .dropDestination(for: Color.self) { colors, _ in
                 guard let newColor = colors.first else { return false }
@@ -38,7 +39,7 @@ struct PointOnCanvas: View {
             }
             .onChange(of: isPopoverVisible) { before, after in
                 //print("Popover down, but an existing isn't dragging (so canvas is probably Hovering, right? \(canvasState.isHovering)")
-                if after == false && canvasState.isHovering {
+                if after == false && cursorState.isHovering {
                     /// If this is the only point as the popover closed, deselect it.
                     if canvasState.selectedPointIDs == [meshPoint.id] {
                         canvasState.selectedPointIDs = []

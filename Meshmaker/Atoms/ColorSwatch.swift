@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct Swatch: View {
-    @EnvironmentObject var canvasState: CanvasState
     var color: Color
     var stroke: Color = .white
     var radii: CGFloat = 4

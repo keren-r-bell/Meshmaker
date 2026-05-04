@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MeshCanvasEditor: View {
     @EnvironmentObject var canvasState: CanvasState
+    @EnvironmentObject var cursorState: CursorState
     var geometry: GeometryProxy
     
     var body: some View {
@@ -29,7 +30,7 @@ struct MeshCanvasEditor: View {
             )
             .zIndex(1.0)
             
-            if canvasState.isMouseDown {
+            if cursorState.isMouseDown {
                 ForEach(Array($canvasState.ghosts.enumerated()), id: \.offset) { rowIndex, $meshPoint in
                     Point(color: meshPoint.color)
                         .position(
@@ -41,19 +42,19 @@ struct MeshCanvasEditor: View {
                 }
             }
             
-            if canvasState.isHovering {
-                if canvasState.orientLineHorizIfTrue {
+            if cursorState.isHovering {
+                if cursorState.orientLineHorizIfTrue {
                     Rectangle()
                         .fill(.white.opacity(0.6))
                         .frame(height: 2)
-                        .position(x: geometry.size.width / 2, y: canvasState.sharedValue)
+                        .position(x: geometry.size.width / 2, y: cursorState.sharedValue)
                         .shadow(radius: 8, y: 3)
                         .zIndex(2.0)
                 } else {
                     Rectangle()
                         .fill(.white.opacity(0.6))
                         .frame(width: 2)
-                        .position(x: canvasState.sharedValue, y: geometry.size.height / 2)
+                        .position(x: cursorState.sharedValue, y: geometry.size.height / 2)
                         .shadow(radius: 8, y: 3)
                         .zIndex(2.0)
                 }
@@ -61,8 +62,8 @@ struct MeshCanvasEditor: View {
                 Point(color: .blue)
                     .allowsHitTesting(false)
                     .position(
-                        x: canvasState.orientLineHorizIfTrue ? canvasState.cursorPosition.x : canvasState.sharedValue,
-                        y: canvasState.orientLineHorizIfTrue ? canvasState.sharedValue : canvasState.cursorPosition.y
+                        x: cursorState.orientLineHorizIfTrue ? cursorState.cursorPosition.x : cursorState.sharedValue,
+                        y: cursorState.orientLineHorizIfTrue ? cursorState.sharedValue : cursorState.cursorPosition.y
                     )
                     .zIndex(2.5)
             }
@@ -86,22 +87,22 @@ struct MeshCanvasEditor: View {
                         .gesture(
                             DragGesture(minimumDistance: 0.1)
                                 .onChanged { value in
-                                    if canvasState.isHovering {
+                                    if cursorState.isHovering {
                                         //print("And this is a drag!")
                                         canvasState.handleNewSelection(meshPoint, isDragging: true)
                                     }
                                     
-                                    canvasState.isHovering = false
-                                    let dx = (value.translation.width - canvasState.lastDragTranslation.width) / geometry.size.width
-                                    let dy = (value.translation.height - canvasState.lastDragTranslation.height) / geometry.size.height
+                                    cursorState.isHovering = false
+                                    let dx = (value.translation.width - cursorState.lastDragTranslation.width) / geometry.size.width
+                                    let dy = (value.translation.height - cursorState.lastDragTranslation.height) / geometry.size.height
                                     canvasState.moveSelectedPoints(by: CGSize(width: dx, height: dy))
                                     
-                                    canvasState.lastDragTranslation = value.translation
+                                    cursorState.lastDragTranslation = value.translation
                                 }
                                 .onEnded { _ in
                                     withAnimation(.snappy) {
                                         canvasState.moveSelectedPoints(by: .zero, isFinalizing: true)
-                                        canvasState.lastDragTranslation = .zero
+                                        cursorState.lastDragTranslation = .zero
                                     }
                                 }
                         )
@@ -112,7 +113,7 @@ struct MeshCanvasEditor: View {
         .onModifierKeysChanged { old, new in
             canvasState.isShiftDown  = new.contains(.shift)
             if old.contains(.option) != new.contains(.option) {
-                canvasState.orientLineHorizIfTrue.toggle()
+                cursorState.orientLineHorizIfTrue.toggle()
             }
             canvasState.isOptionDown = new.contains(.option)
         }
@@ -120,10 +121,10 @@ struct MeshCanvasEditor: View {
         .onContinuousHover { phase in
             switch phase {
             case .active(let location):
-                canvasState.isHovering = true
-                canvasState.positionLineAndDot(cursor: location, size: geometry.size)
+                cursorState.isHovering = true
+                cursorState.positionLineAndDot(cursor: location, size: geometry.size, canvas: canvasState)
             case .ended:
-                canvasState.isHovering = false
+                cursorState.isHovering = false
             }
         }
                                                 // DRAG NEW DOT GESTURE, ADD GHOSTS
@@ -131,18 +132,18 @@ struct MeshCanvasEditor: View {
             DragGesture(minimumDistance: 0.0)
                 .onChanged { value in
                     canvasState.selectedPointIDs = []
-                    canvasState.isMouseDown = true
-                    canvasState.positionLineAndDot(cursor: value.location, size: geometry.size)
+                    cursorState.isMouseDown = true
+                    cursorState.positionLineAndDot(cursor: value.location, size: geometry.size, canvas: canvasState)
                 }
                 .onEnded { value in
-                    canvasState.isMouseDown = false
+                    cursorState.isMouseDown = false
                     
                     let mouseY = Float(value.location.y / geometry.size.height)
                     let mouseX = Float(value.location.x / geometry.size.width)
                     if mouseY > 1 || mouseY < 0 || mouseX > 1 || mouseX < 0 {
                         print("Cursor out of canvas on drag end, user does not want to place points.")
                     } else {
-                        canvasState.addGhostsToPoints(size: geometry.size)
+                        canvasState.addGhostsToPoints(size: geometry.size, cursor: cursorState)
                     }
                 }
         )

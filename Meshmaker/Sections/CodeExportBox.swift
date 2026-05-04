@@ -17,7 +17,7 @@ typealias NativeColor = NSColor
 
 // Global helper to copy the current mesh code from a given canvas state.
   func copyMeshCode(from canvasState: CanvasState) {
-      let generatedCode = CodeExportBox().generateMeshGradientCode(
+      let generatedCode = generateMeshGradientCode(
           width: canvasState.meshWidth,
           height: canvasState.meshHeight,
           points: canvasState.points,
@@ -43,7 +43,7 @@ struct CodeExportBox: View {
             smoothGrads: canvasState.smoothGrads
         )
     }
-
+    
     var body: some View {
         VStack(alignment: .leading) {
             Label("SwiftUI Code", systemImage: "swift")
@@ -69,35 +69,35 @@ struct CodeExportBox: View {
                 }
         }
     }
+}
     
+func generateMeshGradientCode(width: Int, height: Int, points: [[MeshPoint]], smoothGrads: Bool) -> String {
+    var pointsRows = [String]()
+    var colorsRows = [String]()
     
-    func generateMeshGradientCode(width: Int, height: Int, points: [[MeshPoint]], smoothGrads: Bool) -> String {
-        var pointsRows = [String]()
-        var colorsRows = [String]()
+    for rowPoints in points {
+        // 1. Format positions: [x, y]
+        let pointsString = rowPoints.map { point in
+            let xStr = String(format: "%g", point.x)
+            let yStr = String(format: "%g", point.y)
+            return "[\(xStr), \(yStr)]"
+        }.joined(separator: ", ")
         
-        for rowPoints in points {
-            // 1. Format positions: [x, y]
-            let pointsString = rowPoints.map { point in
-                let xStr = String(format: "%g", point.x)
-                let yStr = String(format: "%g", point.y)
-                return "[\(xStr), \(yStr)]"
-            }.joined(separator: ", ")
-            
-            // 2. Format colors
-            let colorsString = rowPoints.map { point in
-                return hsbaString(for: point.color)
-            }.joined(separator: ", ")
-            
-            // Indent the rows for pretty printing
-            pointsRows.append("        " + pointsString)
-            colorsRows.append("        " + colorsString)
-        }
+        // 2. Format colors
+        let colorsString = rowPoints.map { point in
+            return hsbaString(for: point.color)
+        }.joined(separator: ", ")
         
-        let allPoints = pointsRows.joined(separator: ",\n")
-        let allColors = colorsRows.joined(separator: ",\n")
-        
-        // 3. Construct the final string template
-        return """
+        // Indent the rows for pretty printing
+        pointsRows.append("        " + pointsString)
+        colorsRows.append("        " + colorsString)
+    }
+    
+    let allPoints = pointsRows.joined(separator: ",\n")
+    let allColors = colorsRows.joined(separator: ",\n")
+    
+    // 3. Construct the final string template
+    return """
         MeshGradient(
             width: \(width),
             height: \(height),
@@ -110,8 +110,6 @@ struct CodeExportBox: View {
             smoothsColors: \(smoothGrads)
         )
         """
-    }
-
 }
 
 

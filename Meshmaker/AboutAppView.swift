@@ -136,7 +136,7 @@ struct AboutView: View {
         ZStack {
             ZStack {
                 grads[randomGrad]
-                    .onAppear { randomGrad = Int.random(in: 0..<5) }
+                    .onAppear { randomGrad = Int.random(in: 0..<grads.count) }
             }
             .opacity(0.3)
             .ignoresSafeArea(.all)

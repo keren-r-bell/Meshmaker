@@ -22,28 +22,15 @@ class CanvasState: ObservableObject {
     
     // MARK: Mesh Grid State
     @Published var points: [[MeshPoint]] = []
-    
     @Published var meshWidth: Int = 0
     @Published var meshHeight: Int = 0
     @Published var smoothGrads: Bool = true
-    // MARK: Interaction and Selection State
+    
     @Published var selectedPointIDs: [UUID] = []
-    
-    @Published var isHovering: Bool = false
-    @Published var cursorPosition: CGPoint = .zero
-    
-    @Published var isMouseDown: Bool = false
-    @Published var lastDragTranslation: CGSize = .zero
-    
     @Published var isShiftDown: Bool = false
     @Published var isOptionDown: Bool = false
     
-    // MARK: Helper and Ghost Elements State
     @Published var ghosts: [MeshPoint] = []
-    @Published var orientLineHorizIfTrue: Bool = true
-    var sharedValue: CGFloat = 0.0
-    
-    // MARK: Internal State
     var indexToUpdate: Int = 0
     
     // MARK: Initializers
@@ -107,109 +94,13 @@ class CanvasState: ObservableObject {
         registerUndo(to: snapshot, actionName: actionName)
     }
     
-    func orientLine(cursor: CGPoint, size: CGSize) {
-        let distFromTop = cursor.y
-        let distFromBottom = size.height - cursor.y
-        let lowDistFromVerts = min(distFromTop, distFromBottom)
-        
-        let distFromLeft = cursor.x
-        let distFromRight = size.width - cursor.x
-        let lowDistFromHoris = min(distFromLeft, distFromRight)
-        
-        orientLineHorizIfTrue = lowDistFromVerts < lowDistFromHoris
-    }
     
-    
-    func positionLineAndDot(cursor: CGPoint, size: CGSize) {
-        if !isMouseDown {
-            if !isShiftDown {
-                orientLine(cursor: cursor, size: size)
-            }
-        } else {
-            positionGhosts(size: size)
-        }
-        
-        self.cursorPosition = CGPoint(
-            x: max(0, min(cursor.x, size.width)),
-            y: max(0, min(cursor.y, size.height))
-        )
-        
-        if !isShiftDown {
-            sharedValue = orientLineHorizIfTrue ? self.cursorPosition.y : self.cursorPosition.x
-        }
-    }
-    
-    
-    func positionGhosts(size: CGSize) {
-        var newGhosts: [MeshPoint] = []
-        /// Calculate relative positions based on current orientation and shared value.
-        let relativeX = Float((orientLineHorizIfTrue ? cursorPosition.x : sharedValue) / size.width)
-        let relativeY = Float((orientLineHorizIfTrue ? sharedValue : cursorPosition.y) / size.height)
-        
-        if orientLineHorizIfTrue {
-            for columnIndex in 0..<meshWidth {
-                /// Ensure there are enough rows to form a column.
-                guard points.count > 0 && points[0].count > columnIndex else { continue }
-                let column = points.map { $0[columnIndex] } // Extract points in this column.
-                
-                /// Find the index of the point just below the target relativeY.
-                indexToUpdate = column.lastIndex(where: { $0.y < relativeY } ) ?? 0
-                
-                /// Ensure indexToUpdate is within column bounds.
-                guard indexToUpdate < column.count else { continue }
-                
-                let prev = column[indexToUpdate]
-                /// Get the next point, handling boundary cases.
-                let nextIndex = min(indexToUpdate + 1, column.count - 1)
-                let next = column[nextIndex]
-                
-                /// Interpolate X position and color for the ghost.
-                let avgX = (prev.x + next.x) / 2.0
-                let avgColor = Color(prev.color.mix(with: next.color, by: 0.5)) // Assumes Color.mix method.
-                let ghost = MeshPoint(x: avgX, y: relativeY, color: avgColor)
-                newGhosts.append(ghost)
-            }
-        } else {
-            /// Logic for when the helper line is vertical (adjusting X).
-            for row in points {
-                /// Find the index of the point just left of the target relativeX.
-                indexToUpdate = row.lastIndex(where: { $0.x < relativeX } ) ?? 0
-                
-                /// Ensure indexToUpdate is within row bounds.
-                guard indexToUpdate < row.count else { continue }
-
-                let prev = row[indexToUpdate]
-                /// Get the next point, handling boundary cases.
-                let nextIndex = min(indexToUpdate + 1, row.count - 1)
-                let next = row[nextIndex]
-                
-                /// Interpolate Y position and color for the ghost.
-                let avgY = (prev.y + next.y) / 2.0
-                let avgColor = Color(prev.color.mix(with: next.color, by: 0.5))
-                let ghost = MeshPoint(x: relativeX, y: avgY, color: avgColor)
-                newGhosts.append(ghost)
-            }
-        }
-        
-        /// Remove the ghost closest to the absolute cursor position.
-        let ignoredGhost = newGhosts.min(by: {
-            let distA = hypot($0.x - Float(cursorPosition.x / size.width), $0.y - Float(cursorPosition.y / size.height))
-            let distB = hypot($1.x - Float(cursorPosition.x / size.width), $1.y - Float(cursorPosition.y / size.height))
-            return distA < distB
-        })
-        newGhosts.removeAll { ignoredGhost?.id == $0.id }
-        
-        //withAnimation(.snappy) {
-            self.ghosts = newGhosts
-        //}
-    }
-    
-    func addGhostsToPoints(size: CGSize) {
+    func addGhostsToPoints(size: CGSize, cursor: CursorState) {
         //print("I have to do this myself.")
         
         guard !ghosts.isEmpty else { /*print("No ghosts here..."); */return }
         
-        if !orientLineHorizIfTrue {
+        if !cursor.orientLineHorizIfTrue {
             //print("Adding a new Column")
             /// All ghosts share the same X
             let newX = ghosts.first!.x
@@ -225,11 +116,11 @@ class CanvasState: ObservableObject {
             var sortedGhosts = ghosts.sorted { $0.y < $1.y }
 
             /// Reinsert missing point at cursor Y
-            let actualNormY = Float(cursorPosition.y / size.height)
+            let actualNormY = Float(cursor.cursorPosition.y / size.height)
             let insertAt = sortedGhosts.firstIndex(where: { $0.y > actualNormY }) ?? sortedGhosts.count
 
             let newDotX = ghosts.first!.x
-            let newDotY = Float(cursorPosition.y / size.height)
+            let newDotY = Float(cursor.cursorPosition.y / size.height)
 
             let prev = insertAt > 0 ? sortedGhosts[insertAt - 1] : nil
             let next = insertAt < sortedGhosts.count ? sortedGhosts[insertAt] : nil
@@ -284,12 +175,12 @@ class CanvasState: ObservableObject {
             /// We removed the closest ghost during preview; reinsert a point at the cursor X
             /// NOTE: cursorPosition is already clamped in pixel space; we need normalized X/Y
             /// Recompute normalized cursor
-            let actualNormX = Float(cursorPosition.x / size.width)
+            let actualNormX = Float(cursor.cursorPosition.x / size.width)
             let insertAt = sortedGhosts.firstIndex(where: { $0.x > actualNormX }) ?? sortedGhosts.count
 
             /// Create a new point at the exact cursor projection (same Y as the new row)
             let newDotY = ghosts.first!.y
-            let newDotX = Float(cursorPosition.x / size.width)
+            let newDotX = Float(cursor.cursorPosition.x / size.width)
 
             /// Interpolate color from neighbors if possible
             let prev = insertAt > 0 ? sortedGhosts[insertAt - 1] : nil
