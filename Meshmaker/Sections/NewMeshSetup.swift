@@ -24,13 +24,13 @@ struct NewMeshSetup: View {
             }
             .labelsHidden()*/
             HStack {
-                SmallQuickPalette(color: $startingColor)
+                SmallQuickPalette(boundColor: $startingColor)
                 RoundedRectangle(cornerRadius: 16)
                     .fill(LinearGradient(colors: [startingColor, endingColor], startPoint: .topLeading, endPoint: .bottomTrailing))
                     .stroke(.white, lineWidth: 3)
                     .shadow(radius: 9, y: 5)
                     .frame(width: 128, height: 128)
-                SmallQuickPalette(color: $endingColor)
+                SmallQuickPalette(boundColor: $endingColor)
             }
             
             Button("Create") {
@@ -51,26 +51,23 @@ struct NewMeshSetup: View {
 }
 
 struct SmallQuickPalette: View {
-    @Binding var color: Color
+    @Binding var boundColor: Color
     let spacing = 3.0
+    
+    var colors: [Color] = [.purple, .pink, .red, .orange, .yellow, .brown, .black,
+                           .green, .mint, .teal, .cyan, .blue, .indigo, .white]
     
     var body: some View {
         HStack(alignment: .center, spacing: spacing) {
             VStack(spacing: spacing) {
-                SetupSwatch(boundColor: $color, color: .purple)
-                SetupSwatch(boundColor: $color, color: .pink)
-                SetupSwatch(boundColor: $color, color: .red)
-                SetupSwatch(boundColor: $color, color: .orange)
-                SetupSwatch(boundColor: $color, color: .yellow)
-                SetupSwatch(boundColor: $color, color: .brown)
+                ForEach(0..<7) { index in
+                    SetupSwatch(boundColor: $boundColor, color: colors[index])
+                }
             }
             VStack(spacing: spacing) {
-                SetupSwatch(boundColor: $color, color: .green)
-                SetupSwatch(boundColor: $color, color: .mint)
-                SetupSwatch(boundColor: $color, color: .teal)
-                SetupSwatch(boundColor: $color, color: .cyan)
-                SetupSwatch(boundColor: $color, color: .blue)
-                SetupSwatch(boundColor: $color, color: .indigo)
+                ForEach(7..<14) { index in
+                    SetupSwatch(boundColor: $boundColor, color: colors[index])
+                }
             }
         }
     }
@@ -82,12 +79,12 @@ struct SmallQuickPalette: View {
         var body: some View {
             Swatch(color: color, stroke: boundColor == color ? .accentColor : .white)
                 .onTapGesture {
+                    print("Changed something to \(color.description)")
                     withAnimation {
                         boundColor = color
                     }
                 }
                 .frame(width: 16, height: 16)
-                .draggable(color)
         }
     }
 }

@@ -10,11 +10,19 @@ import SwiftUI
 struct SelectedColorRow: View {
     var name: String = "Color"
     @Binding var color: Color
-    @State var showCopyButton: Bool = false
+    //@State var showPopover: Bool = false
     
     var body: some View {
         HStack {
-            SimilarColors(color: $color)
+            /// Reintroduce this once I figure out why the OnDrop is broken :/
+            /*ReceiverSwatch(color: $color)
+                .frame(width: 36)
+                .popover(isPresented: $showPopover) {
+                    SimilarColors(color: $color)
+                        .frame(width: 100, height: 48)
+                        .padding(6)
+                }
+                .onTapGesture { showPopover.toggle() }*/
             
             VStack(alignment: .leading) {
                 Text(name)
@@ -23,6 +31,8 @@ struct SelectedColorRow: View {
                 
                 ColorInputField(color: $color)
             }
+            
+            SimilarColors(color: $color)
         }
     }
 }

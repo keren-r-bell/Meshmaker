@@ -34,6 +34,7 @@ struct MeshmakerApp: App {
                 .toolbarBackgroundVisibility(
                     .hidden, for: .windowToolbar
                 )
+                .windowFullScreenBehavior(.disabled)
         }
         .commandsRemoved()
         .commands {

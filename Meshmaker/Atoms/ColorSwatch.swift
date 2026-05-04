@@ -18,8 +18,8 @@ struct Swatch: View {
             .stroke(stroke, lineWidth: 2)
             .draggable(color) {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(color)
                     .frame(width: 32, height: 24)
+                    .foregroundStyle(color.gradient) //This sucks! Why is it only reliable showing previews with a gradient modifier???
             }
     }
 }

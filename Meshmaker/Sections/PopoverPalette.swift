@@ -17,12 +17,15 @@ struct PopoverPalette: View {
     
     var body: some View {
         VStack {
-            ColorInputField(color: $color)
-            
+            HStack {
+                ReceiverSwatch(color: $color)
+                    .frame(width: 36, height: 27)
+                ColorInputField(color: $color)
+            }
             SimilarColors(color: $color)
         }
         .padding(8)
-        .frame(width: 140, height: 100)
+        .frame(width: 144, height: 100)
         
         .popoverTip(tutorialTip, arrowEdge: .bottom) { action in
             if action.id == "goToTutorial" {

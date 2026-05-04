@@ -2,7 +2,6 @@
 import SwiftUI
 
 struct InspectorView: View {
-    // Inject the environment object
     @EnvironmentObject var canvasState: CanvasState
     
     var body: some View {
@@ -10,8 +9,6 @@ struct InspectorView: View {
             CodeExportBox()
             Divider()
             if canvasState.selectedPointIDs.isEmpty && canvasState.meshWidth < 3 && canvasState.meshHeight < 3 {
-                //SelectedColorRow(name: "No color selected", color: .constant(.gray))
-                ///Maybe put the "Make new gradient" setup here?
                 NewMeshSetup()
             } else {
                 PaletteBox()

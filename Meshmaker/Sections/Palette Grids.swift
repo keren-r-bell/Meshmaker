@@ -15,28 +15,41 @@ extension Notification.Name {
 struct PaletteBox: View {
     @EnvironmentObject var canvasState: CanvasState
     
+    var colors: [Color] = [.green, .yellow, .orange, .red, .pink, .purple, .blue, .cyan, .teal, .mint, .white, .black]
+    
     var body: some View {
-        VStack(spacing: 6) {
-            HStack(spacing: 6) {
-                Swatch(color: .green).onTapGesture { canvasState.applyColorToSelection (.green) }
-                Swatch(color: .yellow).onTapGesture { canvasState.applyColorToSelection(.yellow) }
-                Swatch(color: .orange).onTapGesture { canvasState.applyColorToSelection(.orange) }
-                Swatch(color: .red).onTapGesture { canvasState.applyColorToSelection(.red) }
-                Swatch(color: .pink).onTapGesture { canvasState.applyColorToSelection(.pink) }
-                Swatch(color: .purple).onTapGesture { canvasState.applyColorToSelection(.purple) }
+        HStack(spacing: 0) {
+            ForEach(0..<colors.count) { index in
+                Swatch(color: colors[index], radii: 2).onTapGesture { canvasState.applyColorToSelection (colors[index]) }
             }
-            .frame(height: 24)
-            HStack(spacing: 6) {
-                Swatch(color: .blue).onTapGesture { canvasState.applyColorToSelection(.blue) }
-                Swatch(color: .cyan).onTapGesture { canvasState.applyColorToSelection(.cyan) }
-                Swatch(color: .teal).onTapGesture { canvasState.applyColorToSelection(.teal) }
-                Swatch(color: .mint).onTapGesture { canvasState.applyColorToSelection(.mint) }
-                Swatch(color: .white).onTapGesture { canvasState.applyColorToSelection(.white) }
-                Swatch(color: .black).onTapGesture { canvasState.applyColorToSelection(.black) }
-            }
-            .frame(height: 24)
         }
-        .labelsHidden()
+        .frame(height: 24)
+    }
+}
+
+struct ReceiverSwatch: View {
+    @EnvironmentObject var canvasState: CanvasState
+    
+    @Binding var color: Color
+    
+    var body: some View {
+        RoundedRectangle(cornerRadius: 8)
+            .fill(color)
+            .padding(4)
+            .background { RoundedRectangle(cornerRadius: 12).fill(.white) }
+            .shadow(radius: 2, y: 1)
+        
+            .dropDestination(for: Color.self) { colors, _ in
+                guard let newColor = colors.first else { return false }
+                canvasState.markUndoPoint("Change Color")
+                color = newColor
+                return true
+            }
+            .draggable(color) {
+                RoundedRectangle(cornerRadius: 8)
+                    .foregroundStyle(color)
+                    .frame(width: 32, height: 24)
+            }
     }
 }
 
@@ -58,9 +71,11 @@ struct SimilarColors: View {
                 let briDown = Color(hue: hue, saturation: sat, brightness: max(bri - 0.14, 0.0))
                 
                 SimilarSwatch(affectedColor: $color, color: briUp)
+                    .clipShape(.rect(cornerRadius: 2))
                 SimilarSwatch(affectedColor: $color, color: briDown)
+                    .clipShape(.rect(cornerRadius: 2))
             }
-            
+            /*
             RoundedRectangle(cornerRadius: 2)
                 .fill(color)
                 .padding(.horizontal, 2)
@@ -69,12 +84,14 @@ struct SimilarColors: View {
                         .fill(color)
                         .frame(width: 32, height: 24)
                 }
-            
+            */
             VStack(spacing: 2) {
                 let satUp = Color(hue: hue, saturation: min(sat + 0.18, 1.0), brightness: bri)
                 let satDown = Color(hue: hue, saturation: max(sat - 0.18, 0.0), brightness: bri)
                 SimilarSwatch(affectedColor: $color, color: satUp)
+                    .clipShape(.rect(cornerRadius: 2))
                 SimilarSwatch(affectedColor: $color, color: satDown)
+                    .clipShape(.rect(cornerRadius: 2))
             }
             
             let overHue = hue + 0.05 //Small fix to wrap color around
@@ -105,7 +122,7 @@ struct SimilarColors: View {
                 }
                 .draggable(color) {
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(color)
+                        .foregroundStyle(color)
                         .frame(width: 32, height: 24)
                 }
         }
