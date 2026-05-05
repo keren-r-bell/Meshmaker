@@ -13,7 +13,7 @@ struct FixFrameButton: View {
     var body: some View {
         Button(
             canvasState.isOptionDown ? canvasState.isShiftDown ? "Straighten All Points" : "Straighten Frame" : "Fit Frame",
-            systemImage: canvasState.isOptionDown ? canvasState.isShiftDown ? "squareshape.split.3x3" : "squareshape.dotted.squareshape" : "squareshape"
+            systemImage: canvasState.isOptionDown ? canvasState.isShiftDown ? "squareshape.split.3x3" : "squareshape.split.2x2.dotted.inside" : "squareshape.dotted.squareshape"
         ) {
             withAnimation(.snappy) {
                 if canvasState.isOptionDown {
@@ -27,14 +27,15 @@ struct FixFrameButton: View {
                 }
             }
         }
+        .contentTransition(.symbolEffect(.replace.downUp))
         /*
-        Button("Fit Frame") { canvasState.fixFrame() }
+        Button("Fit Frame", systemImage: "squareshape.dotted.squareshape") { canvasState.fixFrame() }
             .modifierKeyAlternate(.option) {
-                Button("Straighten Frame") { canvasState.straightenFrame() }
-                    .modifierKeyAlternate(.shift) {
-                        Button("Straighten Mesh") { canvasState.straightenMesh() }
-                    }
+                Button("Straighten Frame", systemImage: "squareshape.split.2x2.dotted.inside") { canvasState.straightenFrame() }
             }
-         */ /// Maybe this works?
+            .modifierKeyAlternate(.option.union(.shift)) {
+                Button("Straighten Mesh", systemImage: "squareshape.split.3x3") { canvasState.straightenMesh() }
+            }
+         */ /// Maybe this works? Doesn't seem like it does.
     }
 }

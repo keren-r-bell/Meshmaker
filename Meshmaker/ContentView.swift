@@ -42,7 +42,7 @@ struct ContentView: View {
                 }
                 ToolbarItem {
                     let isAll = canvasState.points.flatMap{ $0 }.count == canvasState.selectedPointIDs.count
-                    Button("\(isAll ? "Deselect" : "Select") All Points", systemImage: isAll ? "circle" : "checkmark.circle.fill") {
+                    Button("\(isAll ? "Deselect" : "Select") All Points", systemImage: isAll ? "checkmark.circle.fill" : "checkmark.circle") {
                         if isAll {
                             canvasState.selectedPointIDs = []
                         } else {
