@@ -27,6 +27,13 @@ struct MeshmakerApp: App {
                     #if os(macOS)
                     NSWindow.allowsAutomaticWindowTabbing = false
                     #endif
+                    /// To Do: Understand when and how to update Dock Wndow Tile
+                    /*
+                    DispatchQueue.main.async { // one tick lets the window settle
+                        guard let tile = NSApp.mainWindow?.dockTile else { return }
+                        tile.contentView = NSHostingView(rootView: MyDockTileView().environmentObject(canvasState))
+                        tile.display()
+                    }*/
                 }
                 .containerBackground(
                     .thinMaterial, for: .window
@@ -140,4 +147,29 @@ struct MeshmakerApp: App {
         }
     }
 }
-
+/*
+struct MyDockTileView: View {
+    @EnvironmentObject var canvasState: CanvasState
+    
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 32).fill(.background)
+            
+            MeshGradient(
+                width: canvasState.meshWidth,
+                height: canvasState.meshHeight,
+                points: canvasState.points.flatMap { row in
+                    row.map { SIMD2($0.x, $0.y) }
+                },
+                colors: canvasState.points.flatMap { row in
+                    row.map { $0.color }
+                },
+                smoothsColors: canvasState.smoothGrads
+            )
+            .cornerRadius(32)
+            
+            RoundedRectangle(cornerRadius: 32).stroke(.white, lineWidth: 4)
+        }
+        .padding(4)
+    }
+}*/
