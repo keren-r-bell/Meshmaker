@@ -7,6 +7,9 @@
 
 import SwiftUI
 import TipKit
+#if os(macOS)
+import AppKit
+#endif
 
 @main
 struct MeshmakerApp: App {
@@ -27,14 +30,17 @@ struct MeshmakerApp: App {
                     #if os(macOS)
                     NSWindow.allowsAutomaticWindowTabbing = false
                     #endif
-                    /// To Do: Understand when and how to update Dock Wndow Tile
-                    /*
-                    DispatchQueue.main.async { // one tick lets the window settle
-                        guard let tile = NSApp.mainWindow?.dockTile else { return }
-                        tile.contentView = NSHostingView(rootView: MyDockTileView().environmentObject(canvasState))
-                        tile.display()
-                    }*/
                 }
+#if os(macOS)
+                .onReceive(NotificationCenter.default.publisher(for: NSWindow.didMiniaturizeNotification)) { notification in
+                    guard let window = notification.object as? NSWindow else { return }
+                    let tile = window.dockTile
+                    let hostingView = NSHostingView(rootView: MyDockTileView().environmentObject(canvasState))
+                    hostingView.frame = NSRect(origin: .zero, size: tile.size)
+                    tile.contentView = hostingView
+                    tile.display()
+                }
+#endif
                 .containerBackground(
                     .thinMaterial, for: .window
                 )
@@ -147,7 +153,7 @@ struct MeshmakerApp: App {
         }
     }
 }
-/*
+
 struct MyDockTileView: View {
     @EnvironmentObject var canvasState: CanvasState
     
@@ -172,4 +178,4 @@ struct MyDockTileView: View {
         }
         .padding(4)
     }
-}*/
+}
