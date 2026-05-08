@@ -109,7 +109,20 @@ struct MeshCanvasEditor: View {
                 }
             }
         }
-                                                // MODIFIER KEYS
+
+        /// Arrow Keys - TODO
+/*        .onMoveCommand {
+            print($0)
+            switch $0 {
+            case .up: canvasState.moveSelectedPoints(by: CGSize(width: 0.0, height: 0.1), isFinalizing: true)
+            case .down: canvasState.moveSelectedPoints(by: CGSize(width: 0.0, height: -0.1), isFinalizing: true)
+            case .left: canvasState.moveSelectedPoints(by: CGSize(width: 0.1, height: 0.0), isFinalizing: true)
+            case .right: canvasState.moveSelectedPoints(by: CGSize(width: -0.1, height: 0.0), isFinalizing: true)
+            @unknown default:
+                print("Weird! \($0)")
+            }
+        }*/
+        /// Modifier Keys - to be Examined
         .onModifierKeysChanged { old, new in
             canvasState.isShiftDown  = new.contains(.shift)
             if old.contains(.option) != new.contains(.option) {
@@ -117,7 +130,7 @@ struct MeshCanvasEditor: View {
             }
             canvasState.isOptionDown = new.contains(.option)
         }
-                                                // HOVER CANVAS GESTURE
+        /// Hover above Canvas, prepare to place ghosts gesture
         .onContinuousHover { phase in
             switch phase {
             case .active(let location):
@@ -127,7 +140,7 @@ struct MeshCanvasEditor: View {
                 cursorState.isHovering = false
             }
         }
-                                                // DRAG NEW DOT GESTURE, ADD GHOSTS
+        /// Drag dot and place ghosts on canvas gesture
         .gesture (
             DragGesture(minimumDistance: 0.0)
                 .onChanged { value in

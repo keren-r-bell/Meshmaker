@@ -23,6 +23,7 @@ struct MeshmakerApp: App {
             ContentView()
                 .environmentObject(canvasState)
                 .environmentObject(cursorState)
+                .frame(minWidth: 640, minHeight: 480)
                 .onReceive(NotificationCenter.default.publisher(for: .similarColorWillApply)) { _ in
                     canvasState.markUndoPoint("Adjust Color")
                 }
@@ -31,7 +32,7 @@ struct MeshmakerApp: App {
                     NSWindow.allowsAutomaticWindowTabbing = false
                     #endif
                 }
-#if os(macOS)
+                #if os(macOS)
                 .onReceive(NotificationCenter.default.publisher(for: NSWindow.didMiniaturizeNotification)) { notification in
                     guard let window = notification.object as? NSWindow else { return }
                     let tile = window.dockTile
@@ -40,7 +41,7 @@ struct MeshmakerApp: App {
                     tile.contentView = hostingView
                     tile.display()
                 }
-#endif
+                #endif
                 .containerBackground(
                     .thinMaterial, for: .window
                 )
@@ -49,10 +50,9 @@ struct MeshmakerApp: App {
                 )
                 .windowFullScreenBehavior(.disabled)
         }
+        .windowIdealSize(.automatic)
         .commandsRemoved()
         .commands {
-            
-            InspectorCommands()
             
             CommandGroup(before: .appTermination) {
                 Button("About Meshmaker", systemImage: "info.circle") {
@@ -90,14 +90,12 @@ struct MeshmakerApp: App {
                 }
             }
             
-            CommandGroup(replacing: .undoRedo) {
+            CommandMenu("Edit") {
                 UndoButton().environmentObject(canvasState)
                     .keyboardShortcut("Z")
                 RedoButton().environmentObject(canvasState)
                     .keyboardShortcut("Z", modifiers: .command.union(.shift))
-            }
-            
-            CommandMenu("Edit") {
+                Divider()
                 Button("Copy SwiftUI Code", systemImage: "doc.on.doc") {
                     copyMeshCode(from: canvasState)
                 }
@@ -154,28 +152,4 @@ struct MeshmakerApp: App {
     }
 }
 
-struct MyDockTileView: View {
-    @EnvironmentObject var canvasState: CanvasState
-    
-    var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 32).fill(.background)
-            
-            MeshGradient(
-                width: canvasState.meshWidth,
-                height: canvasState.meshHeight,
-                points: canvasState.points.flatMap { row in
-                    row.map { SIMD2($0.x, $0.y) }
-                },
-                colors: canvasState.points.flatMap { row in
-                    row.map { $0.color }
-                },
-                smoothsColors: canvasState.smoothGrads
-            )
-            .cornerRadius(32)
-            
-            RoundedRectangle(cornerRadius: 32).stroke(.white, lineWidth: 4)
-        }
-        .padding(4)
-    }
-}
+
