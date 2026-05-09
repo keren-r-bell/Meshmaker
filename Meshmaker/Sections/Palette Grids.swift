@@ -50,6 +50,7 @@ struct ReceiverSwatch: View {
                     .foregroundStyle(color)
                     .frame(width: 32, height: 24)
             }
+        //todo: voiceover palette descs!
     }
 }
 

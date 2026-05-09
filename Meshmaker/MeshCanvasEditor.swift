@@ -14,6 +14,9 @@ struct MeshCanvasEditor: View {
     
     var body: some View {
         ZStack {
+            NudgeShortcutButtons()
+                .opacity(0.0).accessibilityHidden(true)
+            
             Rectangle()
                 .fill(.background)
                 .stroke(.separator)
@@ -109,19 +112,6 @@ struct MeshCanvasEditor: View {
                 }
             }
         }
-
-        /// Arrow Keys - TODO
-/*        .onMoveCommand {
-            print($0)
-            switch $0 {
-            case .up: canvasState.moveSelectedPoints(by: CGSize(width: 0.0, height: 0.1), isFinalizing: true)
-            case .down: canvasState.moveSelectedPoints(by: CGSize(width: 0.0, height: -0.1), isFinalizing: true)
-            case .left: canvasState.moveSelectedPoints(by: CGSize(width: 0.1, height: 0.0), isFinalizing: true)
-            case .right: canvasState.moveSelectedPoints(by: CGSize(width: -0.1, height: 0.0), isFinalizing: true)
-            @unknown default:
-                print("Weird! \($0)")
-            }
-        }*/
         /// Modifier Keys - to be Examined
         .onModifierKeysChanged { old, new in
             canvasState.isShiftDown  = new.contains(.shift)
