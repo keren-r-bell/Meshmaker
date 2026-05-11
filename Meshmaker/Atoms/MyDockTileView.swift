@@ -29,7 +29,7 @@ struct MyDockTileView: View {
             
             RoundedRectangle(cornerRadius: 16).stroke(.white, lineWidth: 4)
         }
-        .padding(16)
+        .padding()
         .background(.ultraThinMaterial.opacity(0.6))
         .cornerRadius(32)
     }

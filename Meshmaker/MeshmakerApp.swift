@@ -7,9 +7,6 @@
 
 import SwiftUI
 import TipKit
-#if os(macOS)
-import AppKit
-#endif
 
 @main
 struct MeshmakerApp: App {
@@ -28,11 +25,8 @@ struct MeshmakerApp: App {
                     canvasState.markUndoPoint("Adjust Color")
                 }
                 .onAppear {
-                    #if os(macOS)
                     NSWindow.allowsAutomaticWindowTabbing = false
-                    #endif
                 }
-                #if os(macOS)
                 .onReceive(NotificationCenter.default.publisher(for: NSWindow.didMiniaturizeNotification)) { notification in
                     guard let window = notification.object as? NSWindow else { return }
                     let tile = window.dockTile
@@ -41,7 +35,6 @@ struct MeshmakerApp: App {
                     tile.contentView = hostingView
                     tile.display()
                 }
-                #endif
                 .containerBackground(
                     .thinMaterial, for: .window
                 )
@@ -60,9 +53,7 @@ struct MeshmakerApp: App {
                 }
                 Divider()
                 Button("Close Window") {
-                    #if os(macOS)
                     NSApp.keyWindow?.performClose(nil)
-                    #endif
                 }
                 .keyboardShortcut("W")
                 Divider()

@@ -6,14 +6,8 @@
 //
 
 import SwiftUI
-
-#if canImport(UIKit)
-import UIKit
-typealias NativeColor = UIColor
-#elseif canImport(AppKit)
 import AppKit
 typealias NativeColor = NSColor
-#endif
 
 // Global helper to copy the current mesh code from a given canvas state.
   func copyMeshCode(from canvasState: CanvasState) {
@@ -23,12 +17,8 @@ typealias NativeColor = NSColor
           points: canvasState.points,
           smoothGrads: canvasState.smoothGrads
       )
-      #if canImport(AppKit)
       NSPasteboard.general.clearContents()
       NSPasteboard.general.setString(generatedCode, forType: .string)
-      #elseif canImport(UIKit)
-      UIPasteboard.general.string = generatedCode
-      #endif
   }
 
 struct CodeExportBox: View {
@@ -118,14 +108,7 @@ func hsbaString(for color: Color) -> String {
     if !description.contains("Color") && !description.contains("#") && !description.contains(" ") {
         return ".\(description)"
     }
-    #if canImport(UIKit)
-    let native = UIColor(color)
-    var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
-    if native.getHue(&h, saturation: &s, brightness: &b, alpha: &a) {
-        let base = String(format: "Color(hue: %.2f, saturation: %.2f, brightness: %.2f)", h, s, b)
-        return a < 1.0 ? base + ".opacity(\(String(format: "%.2f", a)))" : base
-    }
-    #elseif canImport(AppKit)
+    
     let native = NSColor(color)
     var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
     if let rgb = native.usingColorSpace(.deviceRGB) {
@@ -133,7 +116,6 @@ func hsbaString(for color: Color) -> String {
         let base = String(format: "Color(hue: %.2f, saturation: %.2f, brightness: %.2f)", h, s, b)
         return a < 1.0 ? base + ".opacity(\(String(format: "%.2f", a)))" : base
     }
-    #endif
     return ".clear"
 }
 

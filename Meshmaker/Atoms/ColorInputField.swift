@@ -19,12 +19,8 @@ struct ColorInputField: View {
                 .overlay(alignment: .trailing) {
                     if isHovering {
                         Button("Copy color", systemImage: "document.on.document") {
-                            #if canImport(AppKit)
-                                NSPasteboard.general.clearContents()
-                                NSPasteboard.general.setString(color.description, forType: .string)
-                            #elseif canImport(UIKit)
-                                UIPasteboard.general.string = color.description//hsbaString(for: color)
-                            #endif
+                            NSPasteboard.general.clearContents()
+                            NSPasteboard.general.setString(color.description, forType: .string)
                         }
                         .labelStyle(.iconOnly)
                         .buttonStyle(.glassProminent)

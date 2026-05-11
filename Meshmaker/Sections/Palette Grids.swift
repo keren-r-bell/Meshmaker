@@ -131,11 +131,9 @@ struct SimilarColors: View {
 }
 
 public func hsbaComponents(of color: Color) -> (h: CGFloat, s: CGFloat, b: CGFloat, a: CGFloat) {
-    #if canImport(AppKit)
-        let native = NSColor(color).usingColorSpace(.deviceRGB) ?? .black
-        var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
-        native.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
-        
-        return (h, s, b, a)
-    #endif
+    let native = NSColor(color).usingColorSpace(.deviceRGB) ?? .black
+    var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+    native.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+    
+    return (h, s, b, a)
 }
