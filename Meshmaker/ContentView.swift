@@ -32,7 +32,6 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Toggle(isInspectorShowing ? "Hide Inspector" : "Show Inspector", systemImage: "sidebar.trailing", isOn: $isInspectorShowing)
-                        .keyboardShortcut(.tab, modifiers: [])
                 }
             }
             .inspector(isPresented: $isInspectorShowing) {

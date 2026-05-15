@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppKit
 
 struct ColorInputField: View {
     @State var isHovering: Bool = false
@@ -13,20 +14,21 @@ struct ColorInputField: View {
     
     var body: some View {
         VStack {
-            TextField("Hex", text: .constant(color.description))
+            TextField("Hex", text: .constant(hsbaString(for: color)))
                 .textFieldStyle(.roundedBorder)
                 .fontDesign(.monospaced)
                 .overlay(alignment: .trailing) {
                     if isHovering {
                         Button("Copy color", systemImage: "document.on.document") {
                             NSPasteboard.general.clearContents()
-                            NSPasteboard.general.setString(color.description, forType: .string)
+                            NSPasteboard.general.setString(hsbaString(for: color), forType: .string)
                         }
                         .labelStyle(.iconOnly)
                         .buttonStyle(.glassProminent)
                     }
                 }
                 .lineLimit(1)
+                .focusable(false)
                 .contentShape(.containerRelative)
                 .onContinuousHover { phase in
                     switch phase {
