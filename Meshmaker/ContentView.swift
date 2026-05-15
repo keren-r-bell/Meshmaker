@@ -31,7 +31,7 @@ struct ContentView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    Toggle("View Mesh", systemImage: "sidebar.trailing", isOn: $isInspectorShowing)
+                    Toggle(isInspectorShowing ? "Hide Inspector" : "Show Inspector", systemImage: "sidebar.trailing", isOn: $isInspectorShowing)
                         .keyboardShortcut(.tab, modifiers: [])
                 }
             }

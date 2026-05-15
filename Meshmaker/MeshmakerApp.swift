@@ -46,7 +46,7 @@ struct MeshmakerApp: App {
         .windowIdealSize(.automatic)
         .commandsRemoved()
         .commands {
-            
+            InspectorCommands()
             CommandGroup(before: .appTermination) {
                 Button("About Meshmaker", systemImage: "info.circle") {
                     openWindow(id: "about")

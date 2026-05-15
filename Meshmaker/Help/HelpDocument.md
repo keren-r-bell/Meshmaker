@@ -6,33 +6,48 @@ This app was made because of how frustrating I found coding even simple placehol
   
 ---
 ### Starting Off  
-The program opens with a classic preset. You can get familiar with using Meshmaker by toying with the additional presets, using the **⊞** button on the top-right.  
-The point of the program is to use your design in SwiftUI apps. Once you have a design you like, press **🗐 Copy to Clipboard**, and test it in your app.  
+The program opens with a classic preset. You can get familiar with using Meshmaker by toying with the additional presets, using the **+** menu button on the top-right.  
+
+To begin your own gradient, select **New** from the same menu. Pick any two colors, and start adding points.
+
+The point of the program is to use your design in SwiftUI apps. Once you have a design you like, press **🗐 Copy to Clipboard**, and see it in your app!  
     
 ---
 ### Moving Points  
 Drag the control **🔘 points** to move them. If you exceed the square canvas, points will snap back to place.  
 You can use **⇧ Shift** to select multiple points, and move them together.  
+
+
+If you moved some points off the border, you can quickly hit the **Fix Frame** button in the toolbar to realign everything to the frame. 
+
+You can further align points either along the frame or across the entire mesh by holding **⌥ Option** or **⌥ Option + ⇧ Shift** respectively.
     
 ---
 ### Coloring Points  
 **Selected points** appear in the Sidebar, where you can adjust their color, or change them entirely (To be implemented!).  
+
 In the selected color's row, you can subtly adjust the hue, saturation and brightness of the center color.   
+
 
 Above the point list, are **🔲 Swatches**. When you select one of them, all selected points will change to its color. To quickly begin iterating from a color, select all points (**⌘ + A**), pick a swatch, and begin iterating.
   
 ---
 ### Adding Points  
 When you add a point to the canvas, additional points are needed to maintain symmetry of width/height.  
+
 As you hover across the canvas, a line demonstrates along which axis the additional points will be spread. As you hold to place the point, you can see where exactly the other points will be placed.  
 
+
 You can hold **⇧ Shift** to lock the line in place for more precise control.  
+
 You can hold **⌥ Option** to invert the line’s automatic direction.
 
 ---
 ### Finishing Up
 To use the Mesh Gradient you made, press **🗐 Copy to Clipboard**, and paste it in your SwiftUI project.  
-Your code should look something like this:
+
+Your code should look something like this:  
+
 ```swift
 MeshGradient(
     width: 2,

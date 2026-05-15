@@ -19,7 +19,6 @@ struct HelpWindowView: View {
                 }
             }.safeAreaPadding(24)
         }
-        .frame(width: 540, height: 360)
     }
 }
 

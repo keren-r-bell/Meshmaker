@@ -14,7 +14,7 @@ func loadMarkdown(_ doc: String) -> Document? {
     guard let url = Bundle.main.url(forResource: doc, withExtension: "md"),
           let text = try? String(contentsOf: url, encoding: .utf8)
     else { return nil }
-    return Document(parsing: text)
+    return Document(parsing: text, options: .parseBlockDirectives)
 }
 
 
@@ -128,6 +128,32 @@ final class MarkdownRenderer: MarkupVisitor {
             }
         )
     }
+    
+    func visitBlockDirective(_ directive: BlockDirective) -> AnyView {
+        switch directive.name {
+        case "Palette":
+            let name = directive.argumentText.segments.first?.trimmedText ?? ""
+            return AnyView(embeddedView(named: String(name)))
+        case "InteractiveView":
+            // Parse the argument text to extract name
+            let args = directive.argumentText.segments.first?.trimmedText ?? ""
+            // Find quoted string after name:
+            let name = args.components(separatedBy: "\"").dropFirst().first ?? ""
+            return AnyView(embeddedView(named: name))
+        default:
+            return AnyView(EmptyView())
+        }
+    }
+
+    @ViewBuilder
+    private func embeddedView(named name: String) -> some View {
+        switch name {
+        case "Palette":
+            HelpPaletteView()
+        default:
+            EmptyView()
+        }
+    }
 
     func defaultVisit(_ markup: any Markup) -> AnyView {
         AnyView(EmptyView())
@@ -179,3 +205,4 @@ final class MarkdownRenderer: MarkupVisitor {
         }
     }
 }
+
