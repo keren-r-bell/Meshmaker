@@ -121,6 +121,25 @@ struct AboutView: View {
                 Color(hue: 0.03, saturation: 0.70, brightness: 1.00), Color(hue: 0.00, saturation: 0.68, brightness: 1.00), Color(hue: 0.97, saturation: 0.82, brightness: 0.80)
             ],
             smoothsColors: true
+        ),
+        MeshGradient(
+            width: 5,
+            height: 5,
+            points: [
+                [0, 0], [0.268568, 0], [0.5, 0], [0.749918, 0], [1, 0],
+                [0, 0.300843], [0.268568, 0.300843], [0.400826, 0.875041], [0.75935, 0.902005], [1, 0.300843],
+                [0, 0.5], [0.114963, 0.87945], [0.5, 0.5], [0.70821, 0.419824], [1, 0.5],
+                [0, 0.723733], [0.300156, 0.517645], [0.692944, 0.723733], [0.755024, 0.277549], [1, 0.723733],
+                [0, 1], [0.268568, 1], [0.5, 1], [0.749918, 1], [1, 1]
+            ],
+            colors: [
+                Color(hue: 0.63, saturation: 1.00, brightness: 0.78), Color(hue: 0.60, saturation: 1.00, brightness: 0.79), Color(hue: 0.58, saturation: 1.00, brightness: 0.78), Color(hue: 0.56, saturation: 1.00, brightness: 0.79), Color(hue: 0.53, saturation: 1.00, brightness: 0.78),
+                Color(hue: 0.57, saturation: 1.00, brightness: 0.79), Color(hue: 0.55, saturation: 1.00, brightness: 0.76), Color(hue: 0.53, saturation: 1.00, brightness: 0.73), Color(hue: 0.51, saturation: 1.00, brightness: 0.70), Color(hue: 0.48, saturation: 1.00, brightness: 0.71),
+                Color(hue: 0.53, saturation: 0.82, brightness: 0.78), Color(hue: 0.51, saturation: 0.88, brightness: 0.75), Color(hue: 0.48, saturation: 1.00, brightness: 0.78), Color(hue: 0.46, saturation: 1.00, brightness: 0.79), Color(hue: 0.43, saturation: 1.00, brightness: 0.78),
+                Color(hue: 0.46, saturation: 0.97, brightness: 0.73), Color(hue: 0.45, saturation: 1.00, brightness: 0.72), Color(hue: 0.44, saturation: 1.00, brightness: 0.69), Color(hue: 0.42, saturation: 1.00, brightness: 0.66), Color(hue: 0.41, saturation: 1.00, brightness: 0.64),
+                Color(hue: 0.38, saturation: 1.00, brightness: 0.78), Color(hue: 0.37, saturation: 1.00, brightness: 0.71), Color(hue: 0.33, saturation: 1.00, brightness: 0.64), Color(hue: 0.33, saturation: 1.00, brightness: 0.57), Color(hue: 0.33, saturation: 1.00, brightness: 0.50)
+            ],
+            smoothsColors: true
         )
     ]
     @State var randomGrad = 0

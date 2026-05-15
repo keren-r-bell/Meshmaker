@@ -15,8 +15,8 @@ struct SelectedColorRow: View {
     var body: some View {
         HStack {
             /// Reintroduce this once I figure out why the OnDrop is broken :/
-            /*ReceiverSwatch(color: $color)
-                .frame(width: 36)
+            ReceiverSwatch(color: $color)
+                .frame(width: 36)/*
                 .popover(isPresented: $showPopover) {
                     SimilarColors(color: $color)
                         .frame(width: 100, height: 48)

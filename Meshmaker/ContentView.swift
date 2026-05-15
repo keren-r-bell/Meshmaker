@@ -11,6 +11,7 @@ struct ContentView: View {
     @EnvironmentObject var canvasState: CanvasState
     @EnvironmentObject var cursorState: CursorState
     @Environment(\.undoManager) private var undoManager
+    @State var isInspectorShowing: Bool = true
     
     let newPaletteTutorial = NewPaletteTutorial()
     
@@ -18,44 +19,52 @@ struct ContentView: View {
         NavigationStack {
             HStack {
                 GeometryReader { geometry in
-                    MeshCanvasEditor(geometry: geometry)
+                    MeshCanvasEditor(isInspectorShowing: $isInspectorShowing, geometry: geometry)
                 }
                 .aspectRatio(1.0, contentMode: .fit)
                 .padding(48)
-                
+                /*
                 InspectorView()
                     .glassEffect(in: .containerRelative)
                     .padding(12)
-                    .frame(width: 300)
+                    .frame(width: 300)*/
             }
-/*            .inspector(isPresented: .constant(true)) {
-                InspectorView()
-            }*/
             .toolbar {
-                ToolbarItemGroup() {
-                    UndoButton().environmentObject(canvasState)
-                    RedoButton().environmentObject(canvasState)
+                ToolbarItem(placement: .primaryAction) {
+                    Toggle("View Mesh", systemImage: "sidebar.trailing", isOn: $isInspectorShowing)
+                        .keyboardShortcut(.tab, modifiers: [])
                 }
-                ToolbarSpacer()
-                ToolbarItem {
-                    FixFrameButton()
-                }
-                ToolbarItem {
-                    let isAll = canvasState.points.flatMap{ $0 }.count == canvasState.selectedPointIDs.count
-                    Button("\(isAll ? "Deselect" : "Select") All Points", systemImage: isAll ? "checkmark.circle.fill" : "checkmark.circle") {
-                        if isAll {
-                            canvasState.selectedPointIDs = []
-                        } else {
-                            canvasState.selectAllPoints()
+            }
+            .inspector(isPresented: $isInspectorShowing) {
+                InspectorView()
+                    .toolbar {
+                        ToolbarSpacer(.fixed)
+                        ToolbarItemGroup() {
+                            UndoButton().environmentObject(canvasState)
+                            RedoButton().environmentObject(canvasState)
+                        }
+                        ToolbarSpacer(.fixed)
+                        
+                        ToolbarItem {
+                            FixFrameButton()
+                        }
+                        ToolbarItem {
+                            let isAll = canvasState.points.flatMap{ $0 }.count == canvasState.selectedPointIDs.count
+                            Button("\(isAll ? "Deselect" : "Select") All Points", systemImage: isAll ? "checkmark.circle.fill" : "checkmark.circle") {
+                                if isAll {
+                                    canvasState.selectedPointIDs = []
+                                } else {
+                                    canvasState.selectAllPoints()
+                                }
+                            }
+                            .contentTransition(.symbolEffect(.replace.magic(fallback: .upUp)))
+                        }
+                        ToolbarSpacer(.fixed)
+                        ToolbarItem(placement: .primaryAction) {
+                            PresetMenu()
+                                .popoverTip(newPaletteTutorial, arrowEdge: .trailing)
                         }
                     }
-                    .contentTransition(.symbolEffect(.replace.magic(fallback: .upUp)))
-                }
-                ToolbarSpacer()
-                ToolbarItem() {
-                    PresetMenu()
-                        .popoverTip(newPaletteTutorial, arrowEdge: .trailing)
-                }
             }
             .onAppear {
                 canvasState.setUndoManager(undoManager)
