@@ -36,7 +36,7 @@ struct MeshCanvasEditor: View {
             .zIndex(1.0)
             
             if isInspectorShowing {
-                if cursorState.isMouseDown {
+                if cursorState.isDraggingNew {
                     ForEach(Array($canvasState.ghosts.enumerated()), id: \.offset) { rowIndex, $meshPoint in
                         Point(color: meshPoint.color)
                             .position(
@@ -48,7 +48,7 @@ struct MeshCanvasEditor: View {
                     }
                 }
                 
-                if cursorState.isHovering {
+                if cursorState.isHoveringCanvas {
                     if cursorState.orientLineHorizIfTrue {
                         Rectangle()
                             .fill(.white.opacity(0.6))
@@ -65,7 +65,7 @@ struct MeshCanvasEditor: View {
                             .zIndex(2.0)
                     }
                     
-                    Point(color: .blue)
+                    Point(color: .clear)
                         .allowsHitTesting(false)
                         .position(
                             x: cursorState.orientLineHorizIfTrue ? cursorState.cursorPosition.x : cursorState.sharedValue,
@@ -93,12 +93,11 @@ struct MeshCanvasEditor: View {
                             .gesture(
                                 DragGesture(minimumDistance: 0.1)
                                     .onChanged { value in
-                                        if cursorState.isHovering {
-                                            //print("And this is a drag!")
-                                            canvasState.handleNewSelection(meshPoint, isDragging: true)
+                                        if cursorState.isHoveringCanvas {
+                                            canvasState.handleNewSelection(meshPoint, isDraggingExisting: true)
                                         }
                                         
-                                        cursorState.isHovering = false
+                                        cursorState.isHoveringCanvas = false
                                         let dx = (value.translation.width - cursorState.lastDragTranslation.width) / geometry.size.width
                                         let dy = (value.translation.height - cursorState.lastDragTranslation.height) / geometry.size.height
                                         canvasState.moveSelectedPoints(by: CGSize(width: dx, height: dy))
@@ -128,10 +127,10 @@ struct MeshCanvasEditor: View {
         .onContinuousHover { phase in
             switch phase {
             case .active(let location):
-                cursorState.isHovering = true
+                cursorState.isHoveringCanvas = true
                 cursorState.positionLineAndDot(cursor: location, size: geometry.size, canvas: canvasState)
             case .ended:
-                cursorState.isHovering = false
+                cursorState.isHoveringCanvas = false
             }
         }
         /// Drag dot and place ghosts on canvas gesture
@@ -140,13 +139,13 @@ struct MeshCanvasEditor: View {
                     .onChanged { value in
                         if isInspectorShowing {
                             canvasState.selectedPointIDs = []
-                            cursorState.isMouseDown = true
+                            cursorState.isDraggingNew = true
                             cursorState.positionLineAndDot(cursor: value.location, size: geometry.size, canvas: canvasState)
                         }
                     }
                     .onEnded { value in
                         if isInspectorShowing {
-                            cursorState.isMouseDown = false
+                            cursorState.isDraggingNew = false
                             
                             let mouseY = Float(value.location.y / geometry.size.height)
                             let mouseX = Float(value.location.x / geometry.size.width)

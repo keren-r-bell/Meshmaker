@@ -252,15 +252,15 @@ class CanvasState: ObservableObject {
             selectedPointIDs.append(binding.wrappedValue.id)
         }
     }
-    func handleNewSelection(_ point: MeshPoint, isDragging: Bool) {
+    func handleNewSelection(_ point: MeshPoint, isDraggingExisting: Bool) {
         let isSelectedAlready = selectedPointIDs.contains(point.id)
         
         if !isShiftDown {
-            if !isSelectedAlready || !isDragging {
+            if !isSelectedAlready || !isDraggingExisting {
                 selectedPointIDs = []
             } //else { print("either selected or dragging")}
         } else {
-            if !isDragging && isSelectedAlready {
+            if !isDraggingExisting && isSelectedAlready {
                 selectedPointIDs.removeAll(where: { $0 == point.id } )
             }
         }

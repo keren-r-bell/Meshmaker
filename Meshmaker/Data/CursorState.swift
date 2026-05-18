@@ -9,9 +9,9 @@ import SwiftUI
 import Combine
 
 class CursorState: ObservableObject {
-    @Published var isHovering = false
+    @Published var isHoveringCanvas = false
     @Published var cursorPosition: CGPoint = .zero
-    @Published var isMouseDown = false
+    @Published var isDraggingNew = false
     
     @Published var orientLineHorizIfTrue = true
     @Published var sharedValue: CGFloat = 0
@@ -32,7 +32,7 @@ class CursorState: ObservableObject {
     }
     
     func positionLineAndDot(cursor: CGPoint, size: CGSize, canvas: CanvasState) {
-        if !isMouseDown {
+        if !isDraggingNew {
             if !canvas.isShiftDown {
                 orientLine(cursor: cursor, size: size)
             }

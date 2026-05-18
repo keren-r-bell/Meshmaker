@@ -27,7 +27,7 @@ struct FixFrameButton: View {
                 }
             }
         }
-        .contentTransition(.symbolEffect(.replace.downUp))
+        //.contentTransition(.symbolEffect(.replace.downUp))
         /*
         Button("Fit Frame", systemImage: "squareshape.dotted.squareshape") { canvasState.fixFrame() }
             .modifierKeyAlternate(.option) {

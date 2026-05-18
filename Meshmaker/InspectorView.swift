@@ -29,7 +29,7 @@ struct InspectorView: View {
                     Divider()
                 }
             }
-            Toggle("Smooth Gradients", systemImage: "graph.2d", isOn: $canvasState.smoothGrads)
+            Toggle("Smooth Gradients", isOn: $canvasState.smoothGrads)
         }
         .safeAreaPadding()
     }

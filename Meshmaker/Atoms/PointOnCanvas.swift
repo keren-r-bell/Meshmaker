@@ -18,7 +18,7 @@ struct PointOnCanvas: View {
         Point(color: meshPoint.color)
             .padding()
             .contentShape(.circle)
-            .pointerStyle(cursorState.isHovering ? .grabIdle : .grabActive)
+            .pointerStyle(cursorState.isHoveringCanvas ? .grabIdle : .grabActive)
         
             .dropDestination(for: Color.self) { colors, _ in
                 guard let newColor = colors.first else { return false }
@@ -28,7 +28,7 @@ struct PointOnCanvas: View {
             }
         
             .onTapGesture {
-                canvasState.handleNewSelection(meshPoint, isDragging: false)
+                canvasState.handleNewSelection(meshPoint, isDraggingExisting: false)
                 if canvasState.selectedPointIDs.contains(where: { $0 == meshPoint.id } ) && !canvasState.isShiftDown {
                     isPopoverVisible.toggle()
                 }
@@ -39,7 +39,7 @@ struct PointOnCanvas: View {
             }
             .onChange(of: isPopoverVisible) { before, after in
                 //print("Popover down, but an existing isn't dragging (so canvas is probably Hovering, right? \(canvasState.isHovering)")
-                if after == false && cursorState.isHovering {
+                if after == false && cursorState.isHoveringCanvas {
                     /// If this is the only point as the popover closed, deselect it.
                     if canvasState.selectedPointIDs == [meshPoint.id] {
                         canvasState.selectedPointIDs = []
