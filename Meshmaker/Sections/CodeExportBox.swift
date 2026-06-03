@@ -35,28 +35,22 @@ struct CodeExportBox: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Label("SwiftUI Code", systemImage: "swift")
-                .font(.headline)
-            
-            // 2. Pass the generated string to the TextEditor
+        GroupBox {
             TextEditor(text: .constant(generatedCode))
                 .font(.system(size: 8, design: .monospaced))
                 .scrollContentBackground(.hidden)
-                .contentTransition(.numericText())
                 .frame(height: 130)
-                .background(.thickMaterial)
-                .cornerRadius(8)
-                .padding(8)
                 .disabled(true)
                 .focusable(false)
-                .overlay(alignment: .bottomTrailing) {
-                    Button("Copy to Clipboard", systemImage: "doc.on.doc") {
-                        copyMeshCode(from: canvasState)
-                    }
-                    .buttonStyle(.glassProminent) // Assuming this is your custom style
-                    .padding()
-                }
+        } label: {
+            Label("SwiftUI Code", systemImage: "swift")
+        }
+        .overlay(alignment: .bottomTrailing) {
+            Button("Copy to Clipboard", systemImage: "doc.on.doc") {
+                copyMeshCode(from: canvasState)
+            }
+            .buttonStyle(.glassProminent) // Assuming this is your custom style
+            .padding()
         }
     }
 }
