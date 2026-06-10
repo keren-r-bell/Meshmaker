@@ -38,12 +38,13 @@ struct ContentView: View {
                 InspectorView()
                     .toolbar {
                         ToolbarSpacer(.fixed)
+                        /*
                         ToolbarItemGroup() {
                             UndoButton().environmentObject(canvasState)
                             RedoButton().environmentObject(canvasState)
                         }
                         ToolbarSpacer(.fixed)
-                        
+                        */
                         ToolbarItem {
                             FixFrameButton()
                         }

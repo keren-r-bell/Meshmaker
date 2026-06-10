@@ -140,6 +140,25 @@ struct AboutView: View {
                 Color(hue: 0.38, saturation: 1.00, brightness: 0.78), Color(hue: 0.37, saturation: 1.00, brightness: 0.71), Color(hue: 0.33, saturation: 1.00, brightness: 0.64), Color(hue: 0.33, saturation: 1.00, brightness: 0.57), Color(hue: 0.33, saturation: 1.00, brightness: 0.50)
             ],
             smoothsColors: true
+        ),
+        MeshGradient(
+            width: 4,
+            height: 5,
+            points: [
+                [0, 0], [0.359358, 0], [0.639297, 0], [1, 0],
+                [0, 0.188715], [0.253872, 0.591884], [0.906024, 0.70487], [1, 0.164071],
+                [0, 0.804878], [0.187118, 0.227908], [0.697899, 0.627327], [1, 0.567882],
+                [0, 0.427387], [0.304158, 0.472752], [0.64033, 0.244774], [1, 0.758394],
+                [0, 1], [0.76388, 1], [0.106345, 1], [1, 1]
+            ],
+            colors: [
+                .indigo, Color(hue: 0.66, saturation: 0.60, brightness: 0.85), Color(hue: 0.64, saturation: 0.60, brightness: 0.75), Color(hue: 0.60, saturation: 0.60, brightness: 0.82),
+                Color(hue: 0.60, saturation: 0.78, brightness: 0.94), Color(hue: 0.61, saturation: 0.60, brightness: 0.55), Color(hue: 0.60, saturation: 0.96, brightness: 0.52), Color(hue: 0.60, saturation: 0.60, brightness: 0.80),
+                Color(hue: 0.59, saturation: 0.69, brightness: 0.87), Color(hue: 0.55, saturation: 0.77, brightness: 1.00), Color(hue: 0.59, saturation: 0.65, brightness: 0.83), Color(hue: 0.59, saturation: 0.78, brightness: 0.80),
+                Color(hue: 0.59, saturation: 0.60, brightness: 0.79), Color(hue: 0.59, saturation: 0.80, brightness: 0.81), Color(hue: 0.51, saturation: 0.59, brightness: 0.80), Color(hue: 0.59, saturation: 0.60, brightness: 0.79),
+                Color(hue: 0.47, saturation: 0.62, brightness: 0.68), Color(hue: 0.44, saturation: 0.66, brightness: 0.70), Color(hue: 0.42, saturation: 0.69, brightness: 0.73), .green
+            ],
+            smoothsColors: true
         )
     ]
     @State var randomGrad = 0
@@ -173,14 +192,15 @@ struct AboutView: View {
                         Link(destination: URL(string: "https://kirby.pika.page/")!) {
                             Label("My Blog", systemImage: "globe")
                         }
-                        Link(destination: URL(string: "https://kirby.pika.page/")!) {
-                            Label("My Bluesky", systemImage: "at.circle.fill")
+                        HStack {
+                            Link("Bluesky", destination: URL(string: "https://bsky.app/profile/kerenrbell.bsky.social")!)
+                            Link("Mastodon", destination: URL(string: "https://mastodon.social/@kbell")!)
                         }
                     }
                     .font(.caption)
                 }
                 .padding()
-                .glassEffect(.clear)
+                .glassEffect(.clear.interactive())
                 
                 Text(appVersionAndBuild)
                     .font(.caption2)

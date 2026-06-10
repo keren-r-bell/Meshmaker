@@ -79,7 +79,7 @@ struct SmallQuickPalette: View {
         var body: some View {
             Swatch(color: color, stroke: boundColor == color ? .accentColor : .white)
                 .onTapGesture {
-                    print("Changed something to \(color.description)")
+                    //print("Changed something to \(color.description)")
                     withAnimation {
                         boundColor = color
                     }

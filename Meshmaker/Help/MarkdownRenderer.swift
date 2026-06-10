@@ -110,7 +110,7 @@ final class MarkdownRenderer: MarkupVisitor {
                 var renderer = self
                 ForEach(Array(list.listItems.enumerated()), id: \.offset) { _, item in
                     HStack(alignment: .top) {
-                        Text("•")
+                        AnyView(Text("•"))
                         renderer.visit(item)
                     }
                 }
