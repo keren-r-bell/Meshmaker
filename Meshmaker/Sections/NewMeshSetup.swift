@@ -30,29 +30,38 @@ struct NewMeshSetup: View {
                     .stroke(.white, lineWidth: 3)
                     .shadow(radius: 9, y: 5)
                     .frame(width: 128, height: 128)
+                    .onTapGesture {
+                        withAnimation(.bouncy) {
+                            applyNewMesh()
+                        }
+                    }
                 SmallQuickPalette(boundColor: $endingColor)
             }
             
             Button("Create") {
                 withAnimation(.bouncy) {
-                    let preset: [[MeshPoint]] = [
-                        [MeshPoint(x: 0.0, y: 0.0, color: startingColor),
-                         MeshPoint(x: 1.0, y: 0.0, color: startingColor.mix(with: endingColor, by: 0.3))],
-                        [MeshPoint(x: 0.0, y: 1.0, color: endingColor.mix(with: startingColor, by: 0.3)),
-                         MeshPoint(x: 1.0, y: 1.0, color: endingColor)]
-                    ]
-                    canvasState.applyTemplate(preset, actionName: "Create New Mesh")
+                    applyNewMesh()
                 }
             }
             
             Spacer()
         }
     }
+    
+    func applyNewMesh() {
+        let preset: [[MeshPoint]] = [
+            [MeshPoint(x: 0.0, y: 0.0, color: startingColor),
+             MeshPoint(x: 1.0, y: 0.0, color: startingColor.mix(with: endingColor, by: 0.3))],
+            [MeshPoint(x: 0.0, y: 1.0, color: endingColor.mix(with: startingColor, by: 0.3)),
+             MeshPoint(x: 1.0, y: 1.0, color: endingColor)]
+        ]
+        canvasState.applyTemplate(preset, actionName: "Create New Mesh")
+    }
 }
 
 struct SmallQuickPalette: View {
     @Binding var boundColor: Color
-    let spacing = 3.0
+    let spacing = 2.0
     
     var colors: [Color] = [.purple, .pink, .red, .orange, .yellow, .brown, .black,
                            .green, .mint, .teal, .cyan, .blue, .indigo, .white]

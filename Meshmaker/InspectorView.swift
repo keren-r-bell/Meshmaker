@@ -32,5 +32,6 @@ struct InspectorView: View {
             Toggle("Smooth Gradients", isOn: $canvasState.smoothGrads)
         }
         .safeAreaPadding()
+        .contentMargins(.trailing, 13, for: .scrollContent)
     }
 }
