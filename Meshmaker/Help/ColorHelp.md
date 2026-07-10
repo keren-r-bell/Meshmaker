@@ -6,7 +6,7 @@ The **Color Palette** is designed to make quick alterations to the colors after 
   
 -   On the Sides of the palette are swatches to change the **Hue**.  
 -   The two stacked swatches on the left change the **Brightness**,  
--   and the two staccked swatches on the right change the **Saturation**.  
+-   and the two stacked swatches on the right change the **Saturation**.  
   
 @InteractiveView(name: "Palette")  
 
