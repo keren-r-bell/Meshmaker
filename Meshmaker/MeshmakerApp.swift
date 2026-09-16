@@ -90,10 +90,12 @@ struct MeshmakerApp: App {
                 Button("Copy SwiftUI Code", systemImage: "doc.on.doc") {
                     copyMeshCode(from: canvasState)
                 }
+                .keyboardShortcut("C", modifiers: .command.union(.shift))
+                /*
                 Button("Import from Code...", systemImage: "square.and.arrow.down") {
                     // Todo: Import code
                 }
-                .keyboardShortcut("C", modifiers: .command.union(.shift))
+                 */
                 PresetMenu()
                     .environmentObject(canvasState)
                 Divider()

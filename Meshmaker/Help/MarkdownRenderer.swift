@@ -10,11 +10,11 @@ import SwiftUI
 import Markdown
 
 
-func loadMarkdown(_ doc: String) -> Document? {
+func loadMarkdown(_ doc: String) -> Markdown.Document? {
     guard let url = Bundle.main.url(forResource: doc, withExtension: "md"),
           let text = try? String(contentsOf: url, encoding: .utf8)
     else { return nil }
-    return Document(parsing: text, options: .parseBlockDirectives)
+    return Markdown.Document(parsing: text, options: .parseBlockDirectives)
 }
 
 
@@ -22,14 +22,14 @@ final class MarkdownRenderer: MarkupVisitor {
     typealias Result = AnyView
 
     // MARK: - Entry point
-    func render(_ document: Document) -> AnyView {
+    func render(_ document: Markdown.Document) -> AnyView {
         var renderer = self
         return renderer.visit(document)
     }
 
     // MARK: - Block nodes
 
-    func visitDocument(_ document: Document) -> AnyView {
+    func visitDocument(_ document: Markdown.Document) -> AnyView {
         AnyView(
             VStack(alignment: .leading, spacing: 3) {
                 var renderer = self
